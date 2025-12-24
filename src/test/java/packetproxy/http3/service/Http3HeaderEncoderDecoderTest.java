@@ -23,6 +23,7 @@ import org.eclipse.jetty.http.HttpFields;
 import org.eclipse.jetty.http.MetaData;
 import org.junit.jupiter.api.Test;
 import packetproxy.http3.helper.Http3TestHelper;
+import packetproxy.util.Logging;
 
 class Http3HeaderEncoderDecoderTest {
 

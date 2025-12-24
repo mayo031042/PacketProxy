@@ -27,6 +27,7 @@ import packetproxy.quic.value.PacketNumber;
 import packetproxy.quic.value.key.level.InitialKey;
 import packetproxy.quic.value.packet.longheader.LongHeaderPacket;
 import packetproxy.quic.value.packet.longheader.pnspace.InitialPacket;
+import packetproxy.util.Logging;
 
 class InitialPacketTest {
 

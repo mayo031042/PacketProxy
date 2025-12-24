@@ -22,6 +22,7 @@ import java.nio.ByteBuffer;
 import org.apache.commons.codec.binary.Hex;
 import org.junit.jupiter.api.Test;
 import packetproxy.http3.service.frame.FrameParser;
+import packetproxy.util.Logging;
 
 class SettingsFrameTest {
 

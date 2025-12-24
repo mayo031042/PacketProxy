@@ -22,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.nio.ByteBuffer;
 import org.apache.commons.codec.binary.Hex;
 import org.junit.jupiter.api.Test;
+import packetproxy.util.Logging;
 
 /* https://tools.ietf.org/html/draft-ietf-quic-transport-19#section-16 */
 class VariableLengthIntegerTest {

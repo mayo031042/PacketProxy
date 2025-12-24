@@ -17,6 +17,7 @@ package packetproxy.http2.frames;
 
 import org.apache.commons.codec.binary.Hex;
 import org.junit.jupiter.api.Test;
+import packetproxy.util.Logging;
 
 public class FrameTest {
 

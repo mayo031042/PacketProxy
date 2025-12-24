@@ -22,6 +22,7 @@ import org.eclipse.jetty.http2.hpack.HpackDecoder;
 import org.eclipse.jetty.http2.hpack.HpackEncoder;
 import org.junit.jupiter.api.Test;
 import packetproxy.http.Http;
+import packetproxy.util.Logging;
 
 public class HeadersFrameTest {
 

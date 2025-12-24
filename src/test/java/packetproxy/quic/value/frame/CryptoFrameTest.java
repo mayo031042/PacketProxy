@@ -21,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 import org.apache.commons.codec.binary.Hex;
 import org.junit.jupiter.api.Test;
+import packetproxy.util.Logging;
 
 class CryptoFrameTest {
 

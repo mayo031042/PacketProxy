@@ -21,6 +21,7 @@ import packetproxy.http.HeaderField;
 import packetproxy.http.Http;
 import packetproxy.http.HttpHeader;
 import packetproxy.quic.value.SimpleBytes;
+import packetproxy.util.Logging;
 
 public class QpackTest {
 

@@ -22,6 +22,7 @@ import org.apache.commons.codec.binary.Hex;
 import org.junit.jupiter.api.Test;
 import packetproxy.quic.value.ConnectionId;
 import packetproxy.quic.value.Token;
+import packetproxy.util.Logging;
 
 class NewConnectionIdFrameTest {
 

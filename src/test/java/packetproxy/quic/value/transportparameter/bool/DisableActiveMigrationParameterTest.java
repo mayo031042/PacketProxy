@@ -2,6 +2,7 @@ package packetproxy.quic.value.transportparameter.bool;
 
 import org.apache.commons.codec.binary.Hex;
 import org.junit.jupiter.api.Test;
+import packetproxy.util.Logging;
 
 class DisableActiveMigrationParameterTest {
 

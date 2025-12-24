@@ -23,6 +23,7 @@ import java.util.List;
 import org.apache.commons.codec.binary.Hex;
 import org.junit.jupiter.api.Test;
 import packetproxy.quic.service.frame.Frames;
+import packetproxy.util.Logging;
 
 class FramesTest {
 
