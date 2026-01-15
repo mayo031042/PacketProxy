@@ -131,7 +131,8 @@ public class GUIBulkSenderTable {
 
 			table.getColumn(columnNames[i]).setPreferredWidth(columnWidth[i]);
 		}
-		// Set header style with left alignment, border, padding, and sort icons on right edge
+		// Set header style with left alignment, border, padding, and sort icons on
+		// right edge
 		TableHeaderStyle.apply(table, columnNames.length);
 
 		table.addKeyListener(new KeyAdapter() {

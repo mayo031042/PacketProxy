@@ -83,7 +83,8 @@ public class GUIVulCheckRecvTable {
 		((JComponent) table.getDefaultRenderer(Boolean.class)).setOpaque(true);
 		table.setAutoCreateRowSorter(true);
 
-		// Set header alignment to left with border, padding, and sort icons on right edge
+		// Set header alignment to left with border, padding, and sort icons on right
+		// edge
 		TableHeaderStyle.apply(table, columnNames.length);
 		for (int i = 0; i < columnNames.length; i++) {
 			table.getColumn(columnNames[i]).setPreferredWidth(columnWidth[i]);

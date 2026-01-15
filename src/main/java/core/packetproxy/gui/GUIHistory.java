@@ -47,7 +47,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -62,13 +61,11 @@ import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.JToggleButton;
 import javax.swing.KeyStroke;
-import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableRowSorter;
@@ -418,7 +415,9 @@ public class GUIHistory implements PropertyChangeListener {
 
 			table.getColumn(columnNames[i]).setPreferredWidth(columnWidth[i]);
 		}
-		// Set header alignment to left with border and padding, while preserving sort icons on the right edge
+		// Set header alignment to left with border and padding, while preserving sort
+		// icons on the
+		// right edge
 		TableHeaderStyle.apply(table, columnNames.length);
 		((JComponent) table.getDefaultRenderer(Boolean.class)).setOpaque(true);
 		table.getSelectionModel().addListSelectionListener(new javax.swing.event.ListSelectionListener() {
