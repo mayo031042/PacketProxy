@@ -33,28 +33,23 @@ public class XssProtectionCheck implements SecurityCheck {
 
 	@Override
 	public String getColumnName() {
-		return "XSS";
+		return "XSS Protection";
 	}
 
 	@Override
 	public String getMissingMessage() {
-		return "X-Content-Type-Options: nosniff is missing and no CSP";
+		return "X-Content-Type-Options: nosniff is missing";
 	}
 
 	@Override
 	public SecurityCheckResult check(HttpHeader header, Map<String, Object> context) {
 		String xContentTypeOptions = header.getValue("X-Content-Type-Options").orElse("");
-		String csp = (String) context.getOrDefault(CspCheck.CONTEXT_KEY, "");
-
 		boolean hasNosniff = xContentTypeOptions.equalsIgnoreCase("nosniff");
-		boolean hasCsp = !csp.isEmpty();
-
-		if (hasNosniff || hasCsp) {
-			String displayValue = xContentTypeOptions.isEmpty() ? "CSP" : xContentTypeOptions;
-			return SecurityCheckResult.ok(displayValue, xContentTypeOptions);
-		} else {
-			return SecurityCheckResult.fail("Missing", "");
+		if (hasNosniff) {
+			return SecurityCheckResult.ok("nosniff", "nosniff");
 		}
+
+		return SecurityCheckResult.fail("Missing", "");
 	}
 
 	@Override
