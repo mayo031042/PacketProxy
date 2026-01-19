@@ -22,35 +22,28 @@ class SecurityCheckResultTest {
   // ===== Constructor - Abnormal Cases =====
 
   @Test
-  fun testConstructor_NullStatus_ThrowsException() {
-    assertThrows(IllegalArgumentException::class.java) {
-      SecurityCheckResult(null, "display", "raw")
-    }
-  }
-
-  @Test
   fun testConstructor_NullDisplayValue_SetsDefault() {
     val result = SecurityCheckResult(SecurityCheckResult.Status.OK, null, "raw")
-    assertEquals("OK", result.getDisplayValue())
+    assertEquals("OK", result.displayValue)
   }
 
   @Test
   fun testConstructor_NullRawValue_SetsEmptyString() {
     val result = SecurityCheckResult(SecurityCheckResult.Status.FAIL, "display", null)
-    assertEquals("", result.getRawValue())
+    assertEquals("", result.rawValue)
   }
 
   @Test
   fun testConstructor_AllNullExceptStatus_SetsDefaults() {
     val result = SecurityCheckResult(SecurityCheckResult.Status.FAIL, null, null)
-    assertEquals("FAIL", result.getDisplayValue())
-    assertEquals("", result.getRawValue())
+    assertEquals("FAIL", result.displayValue)
+    assertEquals("", result.rawValue)
   }
 
   @Test
   fun testConstructor_WarnStatus_NullDisplay_SetsWarnDefault() {
     val result = SecurityCheckResult(SecurityCheckResult.Status.WARN, null, null)
-    assertEquals("WARN", result.getDisplayValue())
+    assertEquals("WARN", result.displayValue)
   }
 
   // ===== Static Factory Methods - Edge Cases =====
@@ -58,44 +51,44 @@ class SecurityCheckResultTest {
   @Test
   fun testOk_EmptyStrings() {
     val result = SecurityCheckResult.ok("", "")
-    assertTrue(result.isOk())
-    assertEquals("", result.getDisplayValue())
-    assertEquals("", result.getRawValue())
+    assertTrue(result.isOk)
+    assertEquals("", result.displayValue)
+    assertEquals("", result.rawValue)
   }
 
   @Test
   fun testFail_EmptyStrings() {
     val result = SecurityCheckResult.fail("", "")
-    assertTrue(result.isFail())
-    assertEquals("", result.getDisplayValue())
+    assertTrue(result.isFail)
+    assertEquals("", result.displayValue)
   }
 
   @Test
   fun testWarn_EmptyStrings() {
     val result = SecurityCheckResult.warn("", "")
-    assertTrue(result.isWarn())
+    assertTrue(result.isWarn)
   }
 
   @Test
   fun testOk_NullValues() {
     val result = SecurityCheckResult.ok(null, null)
-    assertTrue(result.isOk())
-    assertEquals("OK", result.getDisplayValue())
-    assertEquals("", result.getRawValue())
+    assertTrue(result.isOk)
+    assertEquals("OK", result.displayValue)
+    assertEquals("", result.rawValue)
   }
 
   @Test
   fun testFail_NullValues() {
     val result = SecurityCheckResult.fail(null, null)
-    assertTrue(result.isFail())
-    assertEquals("FAIL", result.getDisplayValue())
+    assertTrue(result.isFail)
+    assertEquals("FAIL", result.displayValue)
   }
 
   @Test
   fun testWarn_NullValues() {
     val result = SecurityCheckResult.warn(null, null)
-    assertTrue(result.isWarn())
-    assertEquals("WARN", result.getDisplayValue())
+    assertTrue(result.isWarn)
+    assertEquals("WARN", result.displayValue)
   }
 
   // ===== Status Methods - Mutual Exclusivity =====
@@ -103,25 +96,25 @@ class SecurityCheckResultTest {
   @Test
   fun testStatusMutualExclusivity_Ok() {
     val result = SecurityCheckResult.ok("test", "test")
-    assertTrue(result.isOk())
-    assertFalse(result.isFail())
-    assertFalse(result.isWarn())
+    assertTrue(result.isOk)
+    assertFalse(result.isFail)
+    assertFalse(result.isWarn)
   }
 
   @Test
   fun testStatusMutualExclusivity_Fail() {
     val result = SecurityCheckResult.fail("test", "test")
-    assertFalse(result.isOk())
-    assertTrue(result.isFail())
-    assertFalse(result.isWarn())
+    assertFalse(result.isOk)
+    assertTrue(result.isFail)
+    assertFalse(result.isWarn)
   }
 
   @Test
   fun testStatusMutualExclusivity_Warn() {
     val result = SecurityCheckResult.warn("test", "test")
-    assertFalse(result.isOk())
-    assertFalse(result.isFail())
-    assertTrue(result.isWarn())
+    assertFalse(result.isOk)
+    assertFalse(result.isFail)
+    assertTrue(result.isWarn)
   }
 
   // ===== Edge Cases with Special Characters =====
@@ -130,22 +123,22 @@ class SecurityCheckResultTest {
   fun testConstructor_SpecialCharactersInValues() {
     val specialChars = "テスト<script>alert('xss')</script>\n\r\t"
     val result = SecurityCheckResult.ok(specialChars, specialChars)
-    assertEquals(specialChars, result.getDisplayValue())
-    assertEquals(specialChars, result.getRawValue())
+    assertEquals(specialChars, result.displayValue)
+    assertEquals(specialChars, result.rawValue)
   }
 
   @Test
   fun testConstructor_VeryLongStrings() {
     val longString = "a".repeat(10000)
     val result = SecurityCheckResult.ok(longString, longString)
-    assertEquals(longString, result.getDisplayValue())
-    assertEquals(longString, result.getRawValue())
+    assertEquals(longString, result.displayValue)
+    assertEquals(longString, result.rawValue)
   }
 
   @Test
   fun testConstructor_WhitespaceOnlyStrings() {
     val result = SecurityCheckResult.ok("   ", "\t\n\r")
-    assertEquals("   ", result.getDisplayValue())
-    assertEquals("\t\n\r", result.getRawValue())
+    assertEquals("   ", result.displayValue)
+    assertEquals("\t\n\r", result.rawValue)
   }
 }

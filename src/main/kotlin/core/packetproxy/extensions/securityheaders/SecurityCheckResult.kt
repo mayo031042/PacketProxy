@@ -16,35 +16,24 @@
 package packetproxy.extensions.securityheaders
 
 /** Represents the result of a security header check. */
-class SecurityCheckResult(status: Status?, displayValue: String?, rawValue: String?) {
+class SecurityCheckResult(val status: Status, displayValue: String?, rawValue: String?) {
   enum class Status {
     OK,
     FAIL,
     WARN,
   }
 
-  private val status: Status
-  private val displayValue: String
-  private val rawValue: String
+  val displayValue: String = displayValue ?: status.name
+  val rawValue: String = rawValue ?: ""
 
-  init {
-    require(status != null) { "status must not be null" }
-    this.status = status
-    this.displayValue = displayValue ?: status.name
-    this.rawValue = rawValue ?: ""
-  }
+  val isOk: Boolean
+    get() = status == Status.OK
 
-  fun getStatus(): Status = status
+  val isFail: Boolean
+    get() = status == Status.FAIL
 
-  fun getDisplayValue(): String = displayValue
-
-  fun getRawValue(): String = rawValue
-
-  fun isOk(): Boolean = status == Status.OK
-
-  fun isFail(): Boolean = status == Status.FAIL
-
-  fun isWarn(): Boolean = status == Status.WARN
+  val isWarn: Boolean
+    get() = status == Status.WARN
 
   companion object {
     @JvmStatic

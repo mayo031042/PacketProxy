@@ -38,7 +38,7 @@ class ContentTypeCheckTest {
     val header = TestHttpHeader.empty()
     val result = check.check(header, context)
 
-    assertTrue(result.isOk())
+    assertTrue(result.isOk)
   }
 
   // ===== text/html without charset =====
@@ -48,8 +48,8 @@ class ContentTypeCheckTest {
     val header = TestHttpHeader.withContentType("text/html")
     val result = check.check(header, context)
 
-    assertTrue(result.isFail())
-    assertEquals("No charset", result.getDisplayValue())
+    assertTrue(result.isFail)
+    assertEquals("No charset", result.displayValue)
   }
 
   @Test
@@ -57,7 +57,7 @@ class ContentTypeCheckTest {
     val header = TestHttpHeader.withContentType("TEXT/HTML")
     val result = check.check(header, context)
 
-    assertTrue(result.isFail())
+    assertTrue(result.isFail)
   }
 
   @Test
@@ -65,7 +65,7 @@ class ContentTypeCheckTest {
     val header = TestHttpHeader.withContentType("Text/Html")
     val result = check.check(header, context)
 
-    assertTrue(result.isFail())
+    assertTrue(result.isFail)
   }
 
   @Test
@@ -73,7 +73,7 @@ class ContentTypeCheckTest {
     val header = TestHttpHeader.withContentType("text/html; boundary=something")
     val result = check.check(header, context)
 
-    assertTrue(result.isFail())
+    assertTrue(result.isFail)
   }
 
   // ===== Malformed charset =====
@@ -84,7 +84,7 @@ class ContentTypeCheckTest {
     val header = TestHttpHeader.withContentType("text/html; charset=")
     val result = check.check(header, context)
 
-    assertTrue(result.isOk())
+    assertTrue(result.isOk)
   }
 
   @Test
@@ -94,7 +94,7 @@ class ContentTypeCheckTest {
     val result = check.check(header, context)
 
     // This passes because it contains "charset="
-    assertTrue(result.isOk())
+    assertTrue(result.isOk)
   }
 
   // ===== Non-HTML Content Types =====
@@ -104,8 +104,8 @@ class ContentTypeCheckTest {
     val header = TestHttpHeader.withContentType("application/json")
     val result = check.check(header, context)
 
-    assertTrue(result.isOk())
-    assertEquals("application/json", result.getDisplayValue())
+    assertTrue(result.isOk)
+    assertEquals("application/json", result.displayValue)
   }
 
   @Test
@@ -113,7 +113,7 @@ class ContentTypeCheckTest {
     val header = TestHttpHeader.withContentType("text/plain")
     val result = check.check(header, context)
 
-    assertTrue(result.isOk())
+    assertTrue(result.isOk)
   }
 
   @Test
@@ -121,7 +121,7 @@ class ContentTypeCheckTest {
     val header = TestHttpHeader.withContentType("image/png")
     val result = check.check(header, context)
 
-    assertTrue(result.isOk())
+    assertTrue(result.isOk)
   }
 
   @Test
@@ -129,7 +129,7 @@ class ContentTypeCheckTest {
     val header = TestHttpHeader.withContentType("application/xml")
     val result = check.check(header, context)
 
-    assertTrue(result.isOk())
+    assertTrue(result.isOk)
   }
 
   // ===== Valid text/html with charset =====
@@ -139,8 +139,8 @@ class ContentTypeCheckTest {
     val header = TestHttpHeader.withContentType("text/html; charset=utf-8")
     val result = check.check(header, context)
 
-    assertTrue(result.isOk())
-    assertEquals("text/html; charset=utf-8", result.getDisplayValue())
+    assertTrue(result.isOk)
+    assertEquals("text/html; charset=utf-8", result.displayValue)
   }
 
   @Test
@@ -148,7 +148,7 @@ class ContentTypeCheckTest {
     val header = TestHttpHeader.withContentType("text/html; charset=ISO-8859-1")
     val result = check.check(header, context)
 
-    assertTrue(result.isOk())
+    assertTrue(result.isOk)
   }
 
   @Test
@@ -156,7 +156,7 @@ class ContentTypeCheckTest {
     val header = TestHttpHeader.withContentType("text/html; charset=utf-8; boundary=something")
     val result = check.check(header, context)
 
-    assertTrue(result.isOk())
+    assertTrue(result.isOk)
   }
 
   // ===== Edge Cases =====
@@ -166,7 +166,7 @@ class ContentTypeCheckTest {
     val header = TestHttpHeader.withContentType("")
     val result = check.check(header, context)
 
-    assertTrue(result.isOk())
+    assertTrue(result.isOk)
   }
 
   @Test
@@ -174,7 +174,7 @@ class ContentTypeCheckTest {
     val header = TestHttpHeader.withContentType("   ")
     val result = check.check(header, context)
 
-    assertTrue(result.isOk())
+    assertTrue(result.isOk)
   }
 
   @Test
@@ -184,7 +184,7 @@ class ContentTypeCheckTest {
     val result = check.check(header, context)
 
     // Implementation uses contains() so this matches text/html
-    assertTrue(result.isFail())
+    assertTrue(result.isFail)
   }
 
   @Test
@@ -193,7 +193,7 @@ class ContentTypeCheckTest {
     val header = TestHttpHeader.withContentType("application/xhtml+xml")
     val result = check.check(header, context)
 
-    assertTrue(result.isOk())
+    assertTrue(result.isOk)
   }
 
   // ===== matchesHeaderLine =====
@@ -217,16 +217,16 @@ class ContentTypeCheckTest {
 
   @Test
   fun testGetName() {
-    assertEquals("Content-Type", check.getName())
+    assertEquals("Content-Type", check.name)
   }
 
   @Test
   fun testGetColumnName() {
-    assertEquals("Content-Type", check.getColumnName())
+    assertEquals("Content-Type", check.columnName)
   }
 
   @Test
   fun testGetMissingMessage() {
-    assertEquals("Content-Type header is missing charset for text/html", check.getMissingMessage())
+    assertEquals("Content-Type header is missing charset for text/html", check.missingMessage)
   }
 }

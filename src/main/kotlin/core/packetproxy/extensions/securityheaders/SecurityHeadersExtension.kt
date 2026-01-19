@@ -27,6 +27,7 @@ import javax.swing.JScrollPane
 import javax.swing.JSplitPane
 import javax.swing.JTable
 import javax.swing.RowSorter.SortKey
+import javax.swing.SortOrder
 import javax.swing.SwingUtilities
 import javax.swing.table.DefaultTableModel
 import javax.swing.table.TableRowSorter
@@ -66,9 +67,9 @@ class SecurityHeadersExtension : Extension() {
       )
   }
 
-  private var table: JTable? = null
-  private var model: DefaultTableModel? = null
-  private var sorter: TableRowSorter<DefaultTableModel>? = null
+  private lateinit var table: JTable
+  private lateinit var model: DefaultTableModel
+  private lateinit var sorter: TableRowSorter<DefaultTableModel>
   private val endpointMap = mutableMapOf<String, Int>()
   private val packetMap = mutableMapOf<String, Packet>()
   private val resultsMap = mutableMapOf<String, Map<String, SecurityCheckResult>>()
@@ -90,7 +91,7 @@ class SecurityHeadersExtension : Extension() {
 
     // Create toolbar with callbacks
     toolbar = SecurityHeadersToolbar(exclusionRuleManager, ::scanHistory, ::clearTable)
-    toolbar?.setSorter(sorter!!)
+    toolbar?.setSorter(sorter)
     panel.add(toolbar!!.panel, BorderLayout.NORTH)
 
     // Create detail panel
@@ -117,7 +118,7 @@ class SecurityHeadersExtension : Extension() {
     columns.add("URL")
     columns.add("Server Response")
     for (check in SECURITY_CHECKS) {
-      columns.add(check.getColumnName())
+      columns.add(check.columnName)
     }
 
     model =
@@ -131,37 +132,32 @@ class SecurityHeadersExtension : Extension() {
 
     // Set up TableRowSorter for filtering
     sorter = TableRowSorter(model)
-    table!!.rowSorter = sorter
+    table.rowSorter = sorter
 
     // Set custom header renderer (left-aligned text, sort icon on right)
-    table!!.tableHeader.defaultRenderer = SecurityHeadersTableRenderer.HeaderRenderer(table!!)
+    table.tableHeader.defaultRenderer = SecurityHeadersTableRenderer.HeaderRenderer(table)
 
     // Set custom cell renderer
-    table!!.setDefaultRenderer(
+    table.setDefaultRenderer(
       Any::class.java,
-      SecurityHeadersTableRenderer.SecurityHeaderRenderer(
-        table!!,
-        model!!,
-        SECURITY_CHECKS,
-        resultsMap,
-      ),
+      SecurityHeadersTableRenderer.SecurityHeaderRenderer(table, model, SECURITY_CHECKS, resultsMap),
     )
 
     // Set column widths
-    table!!.columnModel.getColumn(0).preferredWidth = 50 // Method
-    table!!.columnModel.getColumn(1).preferredWidth = 300 // URL
-    table!!.columnModel.getColumn(2).preferredWidth = 60 // HTTP Status Code
+    table.columnModel.getColumn(0).preferredWidth = 50 // Method
+    table.columnModel.getColumn(1).preferredWidth = 300 // URL
+    table.columnModel.getColumn(2).preferredWidth = 60 // HTTP Status Code
     // Security check columns
     for (i in SECURITY_CHECKS.indices) {
-      table!!.columnModel.getColumn(SecurityHeadersTableRenderer.FIXED_COLUMNS + i).preferredWidth =
+      table.columnModel.getColumn(SecurityHeadersTableRenderer.FIXED_COLUMNS + i).preferredWidth =
         80
     }
 
     // Default sort by URL ascending
     SwingUtilities.invokeLater {
       val sortKeys = mutableListOf<SortKey>()
-      sortKeys.add(SortKey(1, javax.swing.SortOrder.ASCENDING)) // URL column
-      sorter!!.sortKeys = sortKeys
+      sortKeys.add(SortKey(1, SortOrder.ASCENDING)) // URL column
+      sorter.sortKeys = sortKeys
     }
 
     // Setup context menu for right-click
@@ -183,7 +179,7 @@ class SecurityHeadersExtension : Extension() {
     excludeEndpointItem.addActionListener { excludeSelectedEndpoint() }
     contextMenu!!.add(excludeEndpointItem)
 
-    table!!.addMouseListener(
+    table.addMouseListener(
       object : MouseAdapter() {
         override fun mousePressed(e: MouseEvent) {
           handleContextMenuTrigger(e)
@@ -195,9 +191,9 @@ class SecurityHeadersExtension : Extension() {
 
         private fun handleContextMenuTrigger(e: MouseEvent) {
           if (e.isPopupTrigger) {
-            val row = table!!.rowAtPoint(e.point)
-            if (row >= 0 && row < table!!.rowCount) {
-              table!!.setRowSelectionInterval(row, row)
+            val row = table.rowAtPoint(e.point)
+            if (row >= 0 && row < table.rowCount) {
+              table.setRowSelectionInterval(row, row)
             }
             contextMenu!!.show(e.component, e.x, e.y)
           }
@@ -207,11 +203,11 @@ class SecurityHeadersExtension : Extension() {
   }
 
   private fun excludeSelectedHost() {
-    val viewRow = table!!.selectedRow
+    val viewRow = table.selectedRow
     if (viewRow == -1) return
 
-    val modelRow = table!!.convertRowIndexToModel(viewRow)
-    val url = model!!.getValueAt(modelRow, 1) as String
+    val modelRow = table.convertRowIndexToModel(viewRow)
+    val url = model.getValueAt(modelRow, 1) as String
     val host = extractHostFromUrl(url)
 
     if (host != null) {
@@ -220,11 +216,11 @@ class SecurityHeadersExtension : Extension() {
   }
 
   private fun excludeSelectedPath() {
-    val viewRow = table!!.selectedRow
+    val viewRow = table.selectedRow
     if (viewRow == -1) return
 
-    val modelRow = table!!.convertRowIndexToModel(viewRow)
-    val url = model!!.getValueAt(modelRow, 1) as String
+    val modelRow = table.convertRowIndexToModel(viewRow)
+    val url = model.getValueAt(modelRow, 1) as String
     val path = extractPathFromUrl(url)
 
     if (path != null) {
@@ -233,12 +229,12 @@ class SecurityHeadersExtension : Extension() {
   }
 
   private fun excludeSelectedEndpoint() {
-    val viewRow = table!!.selectedRow
+    val viewRow = table.selectedRow
     if (viewRow == -1) return
 
-    val modelRow = table!!.convertRowIndexToModel(viewRow)
-    val method = model!!.getValueAt(modelRow, 0) as String
-    val url = model!!.getValueAt(modelRow, 1) as String
+    val modelRow = table.convertRowIndexToModel(viewRow)
+    val method = model.getValueAt(modelRow, 0) as String
+    val url = model.getValueAt(modelRow, 1) as String
 
     val endpoint = "$method $url"
     exclusionRuleManager.addRule(ExclusionRule(ExclusionRuleType.ENDPOINT, endpoint))
@@ -265,16 +261,16 @@ class SecurityHeadersExtension : Extension() {
   // ===== Selection Listener =====
 
   private fun setupSelectionListener() {
-    table!!.selectionModel.addListSelectionListener { event ->
+    table.selectionModel.addListSelectionListener { event ->
       if (event.valueIsAdjusting) return@addListSelectionListener
 
-      val viewRow = table!!.selectedRow
+      val viewRow = table.selectedRow
       if (viewRow == -1) return@addListSelectionListener
 
-      val modelRow = table!!.convertRowIndexToModel(viewRow)
-      val method = model!!.getValueAt(modelRow, 0) as String
-      val url = model!!.getValueAt(modelRow, 1) as String
-      val statusCode = model!!.getValueAt(modelRow, 2) as String
+      val modelRow = table.convertRowIndexToModel(viewRow)
+      val method = model.getValueAt(modelRow, 0) as String
+      val url = model.getValueAt(modelRow, 1) as String
+      val statusCode = model.getValueAt(modelRow, 2) as String
       val key = "$method $url $statusCode"
 
       val p = packetMap[key] ?: return@addListSelectionListener
@@ -297,7 +293,7 @@ class SecurityHeadersExtension : Extension() {
 
   private fun clearTable() {
     SwingUtilities.invokeLater {
-      model!!.rowCount = 0
+      model.rowCount = 0
       endpointMap.clear()
       packetMap.clear()
       resultsMap.clear()
@@ -364,7 +360,7 @@ class SecurityHeadersExtension : Extension() {
 
       for (check in SECURITY_CHECKS) {
         val result = check.check(header, context)
-        results[check.getName()] = result
+        results[check.name] = result
       }
 
       // Build row data
@@ -373,8 +369,8 @@ class SecurityHeadersExtension : Extension() {
       rowData.add(url)
       rowData.add(statusCode)
       for (check in SECURITY_CHECKS) {
-        val result = results[check.getName()]
-        rowData.add(result?.getDisplayValue() ?: "")
+        val result = results[check.name]
+        rowData.add(result?.displayValue ?: "")
       }
 
       val rowArray = rowData.toTypedArray()
@@ -383,11 +379,11 @@ class SecurityHeadersExtension : Extension() {
         if (endpointMap.containsKey(endpointKey)) {
           val row = endpointMap[endpointKey]!!
           for (i in rowArray.indices) {
-            model!!.setValueAt(rowArray[i], row, i)
+            model.setValueAt(rowArray[i], row, i)
           }
         } else {
-          model!!.addRow(rowArray)
-          endpointMap[endpointKey] = model!!.rowCount - 1
+          model.addRow(rowArray)
+          endpointMap[endpointKey] = model.rowCount - 1
         }
         packetMap[endpointKey] = resPacket
         resultsMap[endpointKey] = results

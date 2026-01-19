@@ -40,8 +40,8 @@ class XssProtectionCheckTest {
     context[CspCheck.CONTEXT_KEY] = ""
     val result = check.check(header, context)
 
-    assertTrue(result.isFail())
-    assertEquals("(none)", result.getDisplayValue())
+    assertTrue(result.isFail)
+    assertEquals("(none)", result.displayValue)
   }
 
   @Test
@@ -50,7 +50,7 @@ class XssProtectionCheckTest {
     // No CSP key in context
     val result = check.check(header, context)
 
-    assertTrue(result.isFail())
+    assertTrue(result.isFail)
   }
 
   // ===== Wrong X-Content-Type-Options Value =====
@@ -61,7 +61,7 @@ class XssProtectionCheckTest {
     context[CspCheck.CONTEXT_KEY] = ""
     val result = check.check(header, context)
 
-    assertTrue(result.isFail())
+    assertTrue(result.isFail)
   }
 
   @Test
@@ -70,7 +70,7 @@ class XssProtectionCheckTest {
     context[CspCheck.CONTEXT_KEY] = ""
     val result = check.check(header, context)
 
-    assertTrue(result.isFail())
+    assertTrue(result.isFail)
   }
 
   @Test
@@ -80,7 +80,7 @@ class XssProtectionCheckTest {
     context[CspCheck.CONTEXT_KEY] = ""
     val result = check.check(header, context)
 
-    assertTrue(result.isFail())
+    assertTrue(result.isFail)
   }
 
   @Test
@@ -91,7 +91,7 @@ class XssProtectionCheckTest {
     val result = check.check(header, context)
 
     // HttpHeader trims values, so this passes
-    assertTrue(result.isOk())
+    assertTrue(result.isOk)
   }
 
   // ===== X-Content-Type-Options: nosniff =====
@@ -102,8 +102,8 @@ class XssProtectionCheckTest {
     context[CspCheck.CONTEXT_KEY] = ""
     val result = check.check(header, context)
 
-    assertTrue(result.isOk())
-    assertEquals("nosniff", result.getDisplayValue())
+    assertTrue(result.isOk)
+    assertEquals("nosniff", result.displayValue)
   }
 
   @Test
@@ -112,7 +112,7 @@ class XssProtectionCheckTest {
     context[CspCheck.CONTEXT_KEY] = ""
     val result = check.check(header, context)
 
-    assertTrue(result.isOk())
+    assertTrue(result.isOk)
   }
 
   @Test
@@ -121,7 +121,7 @@ class XssProtectionCheckTest {
     context[CspCheck.CONTEXT_KEY] = ""
     val result = check.check(header, context)
 
-    assertTrue(result.isOk())
+    assertTrue(result.isOk)
   }
 
   // ===== CSP as Alternative Protection =====
@@ -132,9 +132,9 @@ class XssProtectionCheckTest {
     context[CspCheck.CONTEXT_KEY] = "default-src 'self'"
     val result = check.check(header, context)
 
-    assertTrue(result.isOk())
+    assertTrue(result.isOk)
     // Should prefer showing nosniff over CSP
-    assertEquals("nosniff", result.getDisplayValue())
+    assertEquals("nosniff", result.displayValue)
   }
 
   // ===== matchesHeaderLine =====
@@ -164,16 +164,16 @@ class XssProtectionCheckTest {
 
   @Test
   fun testGetName() {
-    assertEquals("XSS Protection", check.getName())
+    assertEquals("XSS Protection", check.name)
   }
 
   @Test
   fun testGetColumnName() {
-    assertEquals("XSS Protection", check.getColumnName())
+    assertEquals("XSS Protection", check.columnName)
   }
 
   @Test
   fun testGetMissingMessage() {
-    assertEquals("X-Content-Type-Options: nosniff is missing", check.getMissingMessage())
+    assertEquals("X-Content-Type-Options: nosniff is missing", check.missingMessage)
   }
 }

@@ -21,16 +21,23 @@ import packetproxy.http.HttpHeader
 
 /** Cache-Control check. Validates secure cache configuration for sensitive data. */
 class CacheControlCheck : SecurityCheck {
-  override fun getName(): String = "Cache-Control"
-
-  override fun getColumnName(): String = "Cache-Control"
-
-  override fun getMissingMessage(): String =
+  override val name: String = "Cache-Control"
+  override val columnName: String = "Cache-Control"
+  override val missingMessage: String =
     "Cache-Control is not configured for sensitive data protection"
+
+  // Cache-Control doesn't affect overall pass/fail
+  override val affectsOverallStatus: Boolean = false
+
+  override val yellowPatterns: List<String> = listOf("cache-control:")
 
   override fun check(header: HttpHeader, context: MutableMap<String, Any>): SecurityCheckResult {
     val cache = header.getValue("Cache-Control").orElse("")
     val pragma = header.getValue("Pragma").orElse("")
+
+    if (cache.isEmpty() && pragma.isEmpty()) {
+      return SecurityCheckResult.ok("No Cache-Control or Pragma", "")
+    }
 
     val isSecure =
       cache.contains("private") &&
@@ -42,22 +49,11 @@ class CacheControlCheck : SecurityCheck {
     return if (isSecure) {
       SecurityCheckResult.ok(cache, cache)
     } else {
-      if (cache.isEmpty() && pragma.isEmpty()) {
-        SecurityCheckResult.ok("No Cache-Control or Pragma", "")
-      } else {
-        SecurityCheckResult.warn(cache, cache)
-      }
+      SecurityCheckResult.warn(cache, cache)
     }
   }
 
   override fun matchesHeaderLine(headerLine: String): Boolean {
     return headerLine.startsWith("cache-control:")
   }
-
-  override fun affectsOverallStatus(): Boolean {
-    // Cache-Control doesn't affect overall pass/fail
-    return false
-  }
-
-  override fun getYellowPatterns(): List<String> = listOf("cache-control:")
 }

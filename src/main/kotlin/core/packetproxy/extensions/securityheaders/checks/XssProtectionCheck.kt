@@ -23,11 +23,9 @@ import packetproxy.http.HttpHeader
  * XSS Protection check (X-Content-Type-Options). Validates that nosniff is set or CSP is present.
  */
 class XssProtectionCheck : SecurityCheck {
-  override fun getName(): String = "XSS Protection"
-
-  override fun getColumnName(): String = "XSS Protection"
-
-  override fun getMissingMessage(): String = "X-Content-Type-Options: nosniff is missing"
+  override val name: String = "XSS Protection"
+  override val columnName: String = "XSS Protection"
+  override val missingMessage: String = "X-Content-Type-Options: nosniff is missing"
 
   override fun check(header: HttpHeader, context: MutableMap<String, Any>): SecurityCheckResult {
     val xContentTypeOptions = header.getValue("X-Content-Type-Options").orElse("")

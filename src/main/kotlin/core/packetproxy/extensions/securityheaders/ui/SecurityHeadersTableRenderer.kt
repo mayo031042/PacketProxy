@@ -148,8 +148,8 @@ object SecurityHeadersTableRenderer {
         return
       }
 
-      val hasFail = results.values.any { it.isFail() }
-      val hasWarn = results.values.any { it.isWarn() }
+      val hasFail = results.values.any { it.isFail }
+      val hasWarn = results.values.any { it.isWarn }
 
       c.background =
         when {
@@ -180,7 +180,7 @@ object SecurityHeadersTableRenderer {
       val checkIndex = column - FIXED_COLUMNS
       if (checkIndex < securityChecks.size && results != null) {
         val check = securityChecks[checkIndex]
-        val result = results[check.getName()]
+        val result = results[check.name]
         applyResultStyle(c, result)
       } else {
         c.foreground = Color.BLACK
@@ -194,15 +194,15 @@ object SecurityHeadersTableRenderer {
       }
 
       when {
-        result.isFail() -> {
+        result.isFail -> {
           c.foreground = COLOR_FAIL
           c.font = c.font.deriveFont(Font.BOLD)
         }
-        result.isWarn() -> {
+        result.isWarn -> {
           c.foreground = COLOR_WARN
           c.font = c.font.deriveFont(Font.BOLD)
         }
-        result.isOk() -> {
+        result.isOk -> {
           c.foreground = COLOR_OK
         }
         else -> {

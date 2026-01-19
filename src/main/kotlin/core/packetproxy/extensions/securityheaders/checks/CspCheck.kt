@@ -28,12 +28,14 @@ class CspCheck : SecurityCheck {
     const val CONTEXT_KEY = "csp"
   }
 
-  override fun getName(): String = "Content-Security-Policy"
-
-  override fun getColumnName(): String = "CSP"
-
-  override fun getMissingMessage(): String =
+  override val name: String = "Content-Security-Policy"
+  override val columnName: String = "CSP"
+  override val missingMessage: String =
     "Content-Security-Policy with frame-ancestors or X-Frame-Options is missing"
+
+  override val greenPatterns: List<String> =
+    listOf("frame-ancestors 'none'", "frame-ancestors 'self'")
+  override val redPatterns: List<String> = listOf("content-security-policy:")
 
   override fun check(header: HttpHeader, context: MutableMap<String, Any>): SecurityCheckResult {
     val csp = header.getValue("Content-Security-Policy").orElse("")
@@ -76,13 +78,4 @@ class CspCheck : SecurityCheck {
     // For CSP, we use segment-based highlighting instead
     return SecurityCheck.HighlightType.NONE
   }
-
-  // ===== Pattern-based Highlighting =====
-  // Simply define which patterns should be highlighted with each color.
-  // The base interface handles all the segment detection logic.
-
-  override fun getGreenPatterns(): List<String> =
-    listOf("frame-ancestors 'none'", "frame-ancestors 'self'")
-
-  override fun getRedPatterns(): List<String> = listOf("content-security-policy:")
 }

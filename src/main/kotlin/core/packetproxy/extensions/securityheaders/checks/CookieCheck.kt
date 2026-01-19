@@ -31,11 +31,10 @@ class CookieCheck : SecurityCheck {
     }
   }
 
-  override fun getName(): String = "Cookies"
-
-  override fun getColumnName(): String = "Cookies"
-
-  override fun getMissingMessage(): String = "Set-Cookie is missing 'Secure' flag"
+  override val name: String = "Cookies"
+  override val columnName: String = "Cookies"
+  override val missingMessage: String = "Set-Cookie is missing 'Secure' flag"
+  override val greenPatterns: List<String> = listOf("set-cookie:", "secure")
 
   override fun check(header: HttpHeader, context: MutableMap<String, Any>): SecurityCheckResult {
     val setCookies = header.getAllValue("Set-Cookie")
@@ -69,8 +68,6 @@ class CookieCheck : SecurityCheck {
       SecurityCheckResult.fail(displayValue, rawValue)
     }
   }
-
-  override fun getGreenPatterns(): List<String> = listOf("set-cookie:", "secure")
 
   override fun matchesHeaderLine(headerLine: String): Boolean {
     return headerLine.startsWith("set-cookie:")

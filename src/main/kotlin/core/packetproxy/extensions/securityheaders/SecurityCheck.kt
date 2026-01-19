@@ -22,26 +22,14 @@ import packetproxy.http.HttpHeader
  * validation rules.
  */
 interface SecurityCheck {
-  /**
-   * Get the display name for this check (shown in issues pane)
-   *
-   * @return Display name (e.g., "CSP", "XSS Protection")
-   */
-  fun getName(): String
+  /** Display name for this check (shown in issues pane) (e.g., "CSP", "XSS Protection") */
+  val name: String
 
-  /**
-   * Get the column name for the table
-   *
-   * @return Column name (e.g., "CSP", "XSS")
-   */
-  fun getColumnName(): String
+  /** Column name for the table (e.g., "CSP", "XSS") */
+  val columnName: String
 
-  /**
-   * Get the error message when this check fails
-   *
-   * @return Error message describing the issue
-   */
-  fun getMissingMessage(): String
+  /** Error message when this check fails */
+  val missingMessage: String
 
   /**
    * Perform the security check
@@ -60,12 +48,9 @@ interface SecurityCheck {
    */
   fun matchesHeaderLine(headerLine: String): Boolean
 
-  /**
-   * Determine if this check affects the overall pass/fail status
-   *
-   * @return true if a failure should cause overall FAIL status
-   */
-  fun affectsOverallStatus(): Boolean = true
+  /** Determine if this check affects the overall pass/fail status Default: true */
+  val affectsOverallStatus: Boolean
+    get() = true
 
   enum class HighlightType {
     GREEN,
@@ -83,9 +68,9 @@ interface SecurityCheck {
     }
     return when {
       result == null -> HighlightType.NONE
-      result.isOk() -> HighlightType.GREEN
-      result.isWarn() -> HighlightType.YELLOW
-      result.isFail() -> HighlightType.RED
+      result.isOk -> HighlightType.GREEN
+      result.isWarn -> HighlightType.YELLOW
+      result.isFail -> HighlightType.RED
       else -> HighlightType.NONE
     }
   }
@@ -98,40 +83,36 @@ interface SecurityCheck {
   // these patterns in the header line.
 
   /**
-   * Get patterns to highlight in red (dangerous/fail). Override this method to specify patterns
-   * that indicate security issues.
-   *
-   * @return List of patterns to highlight in red (case-insensitive matching)
+   * Patterns to highlight in red (dangerous/fail). Override this method to specify patterns that
+   * indicate security issues. (case-insensitive matching)
    */
-  fun getRedPatterns(): List<String> = emptyList()
+  val redPatterns: List<String>
+    get() = emptyList()
 
   /**
-   * Get patterns to highlight in yellow (warning). Override this method to specify patterns that
-   * indicate potential issues.
-   *
-   * @return List of patterns to highlight in yellow (case-insensitive matching)
+   * Patterns to highlight in yellow (warning). Override this method to specify patterns that
+   * indicate potential issues. (case-insensitive matching)
    */
-  fun getYellowPatterns(): List<String> = emptyList()
+  val yellowPatterns: List<String>
+    get() = emptyList()
 
   /**
-   * Get patterns to highlight in green (safe/ok). Override this method to specify patterns that
-   * indicate secure settings.
-   *
-   * @return List of patterns to highlight in green (case-insensitive matching)
+   * Patterns to highlight in green (safe/ok). Override this method to specify patterns that
+   * indicate secure settings. (case-insensitive matching)
    */
-  fun getGreenPatterns(): List<String> = emptyList()
+  val greenPatterns: List<String>
+    get() = emptyList()
 
   /**
-   * Get highlight segments for a header line. The default implementation uses getRedPatterns(),
-   * getYellowPatterns(), and getGreenPatterns() to automatically find and highlight matching
-   * patterns.
+   * Get highlight segments for a header line. The default implementation uses redPatterns,
+   * yellowPatterns, and greenPatterns to automatically find and highlight matching patterns.
    *
    * <p>
    * Color determination (patterns only shown when result matches):
    * <ul>
-   * <li>getRedPatterns(): Only shown in red when result is FAIL
-   * <li>getYellowPatterns(): Only shown in yellow when result is WARN
-   * <li>getGreenPatterns(): Only shown in green when result is OK
+   * <li>redPatterns: Only shown in red when result is FAIL
+   * <li>yellowPatterns: Only shown in yellow when result is WARN
+   * <li>greenPatterns: Only shown in green when result is OK
    * </ul>
    *
    * @param headerLine The full header line (e.g., "content-security-policy: default-src 'self'")
@@ -146,10 +127,6 @@ interface SecurityCheck {
       return emptyList()
     }
 
-    val redPatterns = getRedPatterns()
-    val yellowPatterns = getYellowPatterns()
-    val greenPatterns = getGreenPatterns()
-
     // If no patterns defined, use default whole-line behavior
     if (redPatterns.isEmpty() && yellowPatterns.isEmpty() && greenPatterns.isEmpty()) {
       return emptyList()
@@ -159,15 +136,15 @@ interface SecurityCheck {
 
     // Add segments only when check result matches the color
     // redPatterns: only shown when FAIL
-    if (result != null && result.isFail()) {
+    if (result != null && result.isFail) {
       addSegmentsForPatterns(headerLine, redPatterns, HighlightType.RED, segments)
     }
     // yellowPatterns: only shown when WARN
-    if (result != null && result.isWarn()) {
+    if (result != null && result.isWarn) {
       addSegmentsForPatterns(headerLine, yellowPatterns, HighlightType.YELLOW, segments)
     }
     // greenPatterns: only shown when OK
-    if (result != null && result.isOk()) {
+    if (result != null && result.isOk) {
       addSegmentsForPatterns(headerLine, greenPatterns, HighlightType.GREEN, segments)
     }
 

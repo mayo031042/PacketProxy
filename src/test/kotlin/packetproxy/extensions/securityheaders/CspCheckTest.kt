@@ -37,8 +37,8 @@ class CspCheckTest {
     val header = TestHttpHeader.empty()
     val result = check.check(header, context)
 
-    assertTrue(result.isFail())
-    assertEquals("(none)", result.getDisplayValue())
+    assertTrue(result.isFail)
+    assertEquals("(none)", result.displayValue)
   }
 
   // ===== CSP without frame-ancestors =====
@@ -48,8 +48,8 @@ class CspCheckTest {
     val header = TestHttpHeader.withCsp("default-src 'self'")
     val result = check.check(header, context)
 
-    assertTrue(result.isFail())
-    assertEquals("default-src 'self'", result.getDisplayValue())
+    assertTrue(result.isFail)
+    assertEquals("default-src 'self'", result.displayValue)
   }
 
   @Test
@@ -57,7 +57,7 @@ class CspCheckTest {
     val header = TestHttpHeader.withCsp("default-src https:")
     val result = check.check(header, context)
 
-    assertTrue(result.isFail())
+    assertTrue(result.isFail)
   }
 
   @Test
@@ -65,7 +65,7 @@ class CspCheckTest {
     val header = TestHttpHeader.withCsp("script-src 'self' 'unsafe-inline'")
     val result = check.check(header, context)
 
-    assertTrue(result.isFail())
+    assertTrue(result.isFail)
   }
 
   // ===== Malformed CSP Values =====
@@ -75,8 +75,8 @@ class CspCheckTest {
     val header = TestHttpHeader.withCsp("")
     val result = check.check(header, context)
 
-    assertTrue(result.isFail())
-    assertEquals("(none)", result.getDisplayValue())
+    assertTrue(result.isFail)
+    assertEquals("(none)", result.displayValue)
   }
 
   @Test
@@ -84,7 +84,7 @@ class CspCheckTest {
     val header = TestHttpHeader.withCsp("   ")
     val result = check.check(header, context)
 
-    assertTrue(result.isFail())
+    assertTrue(result.isFail)
   }
 
   @Test
@@ -93,7 +93,7 @@ class CspCheckTest {
     val header = TestHttpHeader.withCsp("frame-ancestors")
     val result = check.check(header, context)
 
-    assertTrue(result.isFail())
+    assertTrue(result.isFail)
   }
 
   @Test
@@ -101,7 +101,7 @@ class CspCheckTest {
     val header = TestHttpHeader.withCsp("frame-ancestor 'self'")
     val result = check.check(header, context)
 
-    assertTrue(result.isFail())
+    assertTrue(result.isFail)
   }
 
   @Test
@@ -110,7 +110,7 @@ class CspCheckTest {
     val header = TestHttpHeader.withCsp("frame-ancestors \"self\"")
     val result = check.check(header, context)
 
-    assertTrue(result.isFail())
+    assertTrue(result.isFail)
   }
 
   // ===== X-Frame-Options Fallback =====
@@ -120,8 +120,8 @@ class CspCheckTest {
     val header = TestHttpHeader.withXFrameOptions("DENY")
     val result = check.check(header, context)
 
-    assertTrue(result.isOk())
-    assertEquals("X-Frame-Options:DENY", result.getDisplayValue())
+    assertTrue(result.isOk)
+    assertEquals("X-Frame-Options:DENY", result.displayValue)
   }
 
   @Test
@@ -129,7 +129,7 @@ class CspCheckTest {
     val header = TestHttpHeader.withXFrameOptions("SAMEORIGIN")
     val result = check.check(header, context)
 
-    assertTrue(result.isOk())
+    assertTrue(result.isOk)
   }
 
   // ===== Valid CSP Cases =====
@@ -139,8 +139,8 @@ class CspCheckTest {
     val header = TestHttpHeader.withCsp("frame-ancestors 'none'")
     val result = check.check(header, context)
 
-    assertTrue(result.isOk())
-    assertEquals("frame-ancestors 'none'", result.getDisplayValue())
+    assertTrue(result.isOk)
+    assertEquals("frame-ancestors 'none'", result.displayValue)
   }
 
   @Test
@@ -148,8 +148,8 @@ class CspCheckTest {
     val header = TestHttpHeader.withCsp("frame-ancestors 'self'")
     val result = check.check(header, context)
 
-    assertTrue(result.isOk())
-    assertEquals("frame-ancestors 'self'", result.getDisplayValue())
+    assertTrue(result.isOk)
+    assertEquals("frame-ancestors 'self'", result.displayValue)
   }
 
   // ===== Context Storage =====
@@ -202,11 +202,11 @@ class CspCheckTest {
 
   @Test
   fun testGetGreenPatterns_ContainsFrameAncestorsNone() {
-    assertTrue(check.getGreenPatterns().contains("frame-ancestors 'none'"))
+    assertTrue(check.greenPatterns.contains("frame-ancestors 'none'"))
   }
 
   @Test
   fun testGetGreenPatterns_ContainsFrameAncestorsSelf() {
-    assertTrue(check.getGreenPatterns().contains("frame-ancestors 'self'"))
+    assertTrue(check.greenPatterns.contains("frame-ancestors 'self'"))
   }
 }

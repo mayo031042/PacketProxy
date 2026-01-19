@@ -37,8 +37,8 @@ class CookieCheckTest {
     val header = TestHttpHeader.empty()
     val result = check.check(header, context)
 
-    assertTrue(result.isOk())
-    assertEquals("No cookies", result.getDisplayValue())
+    assertTrue(result.isOk)
+    assertEquals("No cookies", result.displayValue)
   }
 
   // ===== Missing Secure Flag =====
@@ -48,7 +48,7 @@ class CookieCheckTest {
     val header = TestHttpHeader.withSetCookie("session=abc123; HttpOnly")
     val result = check.check(header, context)
 
-    assertTrue(result.isFail())
+    assertTrue(result.isFail)
   }
 
   @Test
@@ -56,7 +56,7 @@ class CookieCheckTest {
     val header = TestHttpHeader.withSetCookie("token=xyz; HttpOnly; Path=/")
     val result = check.check(header, context)
 
-    assertTrue(result.isFail())
+    assertTrue(result.isFail)
   }
 
   @Test
@@ -64,7 +64,7 @@ class CookieCheckTest {
     val header = TestHttpHeader.withSetCookie("name=value")
     val result = check.check(header, context)
 
-    assertTrue(result.isFail())
+    assertTrue(result.isFail)
   }
 
   // ===== Multiple Cookies - Mixed Secure Status =====
@@ -78,7 +78,7 @@ class CookieCheckTest {
         .build()
     val result = check.check(header, context)
 
-    assertTrue(result.isFail())
+    assertTrue(result.isFail)
   }
 
   @Test
@@ -91,7 +91,7 @@ class CookieCheckTest {
         .build()
     val result = check.check(header, context)
 
-    assertTrue(result.isFail())
+    assertTrue(result.isFail)
   }
 
   // ===== Edge Cases with Secure Flag Position =====
@@ -103,7 +103,7 @@ class CookieCheckTest {
     val result = check.check(header, context)
 
     // Implementation checks for " secure" (with space), so this fails
-    assertTrue(result.isFail())
+    assertTrue(result.isFail)
   }
 
   @Test
@@ -112,7 +112,7 @@ class CookieCheckTest {
     val header = TestHttpHeader.withSetCookie("data=this_is_secure_data")
     val result = check.check(header, context)
 
-    assertTrue(result.isFail()) // " secure" (with space) not found
+    assertTrue(result.isFail) // " secure" (with space) not found
   }
 
   @Test
@@ -120,7 +120,7 @@ class CookieCheckTest {
     val header = TestHttpHeader.withSetCookie("session=abc123; SECURE")
     val result = check.check(header, context)
 
-    assertTrue(result.isOk())
+    assertTrue(result.isOk)
   }
 
   @Test
@@ -128,7 +128,7 @@ class CookieCheckTest {
     val header = TestHttpHeader.withSetCookie("session=abc123; SeCuRe")
     val result = check.check(header, context)
 
-    assertTrue(result.isOk())
+    assertTrue(result.isOk)
   }
 
   // ===== Valid Cookie Cases =====
@@ -138,7 +138,7 @@ class CookieCheckTest {
     val header = TestHttpHeader.withSetCookie("session=abc123; Secure; HttpOnly")
     val result = check.check(header, context)
 
-    assertTrue(result.isOk())
+    assertTrue(result.isOk)
   }
 
   @Test
@@ -150,7 +150,7 @@ class CookieCheckTest {
         .build()
     val result = check.check(header, context)
 
-    assertTrue(result.isOk())
+    assertTrue(result.isOk)
   }
 
   // ===== Context Storage =====
@@ -187,8 +187,8 @@ class CookieCheckTest {
     val header = TestHttpHeader.withSetCookie("session=$longValue; Secure")
     val result = check.check(header, context)
 
-    assertTrue(result.isOk())
-    assertTrue(result.getDisplayValue().contains("..."))
+    assertTrue(result.isOk)
+    assertTrue(result.displayValue.contains("..."))
   }
 
   // ===== Static hasSecureFlag Method =====

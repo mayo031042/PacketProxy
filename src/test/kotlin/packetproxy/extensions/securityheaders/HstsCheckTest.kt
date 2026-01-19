@@ -37,8 +37,8 @@ class HstsCheckTest {
     val header = TestHttpHeader.empty()
     val result = check.check(header, context)
 
-    assertTrue(result.isFail())
-    assertEquals("(none)", result.getDisplayValue())
+    assertTrue(result.isFail)
+    assertEquals("(none)", result.displayValue)
   }
 
   @Test
@@ -47,7 +47,7 @@ class HstsCheckTest {
     val header = TestHttpHeader.withHsts("")
     val result = check.check(header, context)
 
-    assertTrue(result.isFail())
+    assertTrue(result.isFail)
   }
 
   @Test
@@ -55,7 +55,7 @@ class HstsCheckTest {
     val header = TestHttpHeader.withHsts("   ")
     val result = check.check(header, context)
 
-    assertTrue(result.isFail())
+    assertTrue(result.isFail)
   }
 
   // ===== Malformed HSTS Values =====
@@ -66,7 +66,7 @@ class HstsCheckTest {
     val header = TestHttpHeader.withHsts("invalid-directive")
     val result = check.check(header, context)
 
-    assertTrue(result.isOk())
+    assertTrue(result.isOk)
   }
 
   @Test
@@ -75,7 +75,7 @@ class HstsCheckTest {
     val header = TestHttpHeader.withHsts("max-age=0")
     val result = check.check(header, context)
 
-    assertTrue(result.isOk())
+    assertTrue(result.isOk)
   }
 
   @Test
@@ -84,7 +84,7 @@ class HstsCheckTest {
     val header = TestHttpHeader.withHsts("max-age=-1")
     val result = check.check(header, context)
 
-    assertTrue(result.isOk())
+    assertTrue(result.isOk)
   }
 
   // ===== Valid HSTS Cases =====
@@ -94,8 +94,8 @@ class HstsCheckTest {
     val header = TestHttpHeader.withHsts("max-age=31536000")
     val result = check.check(header, context)
 
-    assertTrue(result.isOk())
-    assertTrue(result.getDisplayValue().contains("max-age=31536000"))
+    assertTrue(result.isOk)
+    assertTrue(result.displayValue.contains("max-age=31536000"))
   }
 
   @Test
@@ -103,7 +103,7 @@ class HstsCheckTest {
     val header = TestHttpHeader.withHsts("max-age=31536000; includeSubDomains")
     val result = check.check(header, context)
 
-    assertTrue(result.isOk())
+    assertTrue(result.isOk)
   }
 
   @Test
@@ -111,7 +111,7 @@ class HstsCheckTest {
     val header = TestHttpHeader.withHsts("max-age=31536000; includeSubDomains; preload")
     val result = check.check(header, context)
 
-    assertTrue(result.isOk())
+    assertTrue(result.isOk)
   }
 
   // ===== matchesHeaderLine =====
@@ -140,16 +140,16 @@ class HstsCheckTest {
 
   @Test
   fun testGetName() {
-    assertEquals("HSTS", check.getName())
+    assertEquals("HSTS", check.name)
   }
 
   @Test
   fun testGetColumnName() {
-    assertEquals("HSTS", check.getColumnName())
+    assertEquals("HSTS", check.columnName)
   }
 
   @Test
   fun testGetMissingMessage() {
-    assertEquals("Strict-Transport-Security header is missing", check.getMissingMessage())
+    assertEquals("Strict-Transport-Security header is missing", check.missingMessage)
   }
 }

@@ -105,7 +105,7 @@ class SecurityHeadersDetailPanel(private val securityChecks: List<SecurityCheck>
 
       // Display results for each check
       for (check in securityChecks) {
-        val result = results[check.getName()]
+        val result = results[check.name]
         if (result != null) {
           writeCheckResult(doc, check, result)
         }
@@ -124,7 +124,7 @@ class SecurityHeadersDetailPanel(private val securityChecks: List<SecurityCheck>
     for (check in securityChecks) {
       if (!check.matchesHeaderLine(line.lowercase())) continue
 
-      val result = results[check.getName()]
+      val result = results[check.name]
       val segments = check.getHighlightSegments(line, result)
       allSegments.addAll(segments)
     }
@@ -184,7 +184,7 @@ class SecurityHeadersDetailPanel(private val securityChecks: List<SecurityCheck>
     results: Map<String, SecurityCheckResult>,
   ): SimpleAttributeSet {
     for (check in securityChecks) {
-      val result = results[check.getName()]
+      val result = results[check.name]
       val type = check.getHighlightType(line, result)
       when (type) {
         SecurityCheck.HighlightType.GREEN -> return textStyles.green
@@ -207,22 +207,22 @@ class SecurityHeadersDetailPanel(private val securityChecks: List<SecurityCheck>
     check: SecurityCheck,
     result: SecurityCheckResult,
   ) {
-    doc.insertString(doc.length, "${check.getName()}: ", textStyles.bold)
+    doc.insertString(doc.length, "${check.name}: ", textStyles.bold)
 
     when {
-      result.isOk() -> {
+      result.isOk -> {
         doc.insertString(doc.length, "OK\n", textStyles.green)
-        doc.insertString(doc.length, "  ${result.getDisplayValue()}\n\n", textStyles.black)
+        doc.insertString(doc.length, "  ${result.displayValue}\n\n", textStyles.black)
       }
-      result.isWarn() -> {
+      result.isWarn -> {
         doc.insertString(doc.length, "WARNING\n", textStyles.yellow)
-        doc.insertString(doc.length, "  ${check.getMissingMessage()}\n", textStyles.yellow)
-        doc.insertString(doc.length, "  Current: ${result.getDisplayValue()}\n\n", textStyles.black)
+        doc.insertString(doc.length, "  ${check.missingMessage}\n", textStyles.yellow)
+        doc.insertString(doc.length, "  Current: ${result.displayValue}\n\n", textStyles.black)
       }
       else -> {
         doc.insertString(doc.length, "FAIL\n", textStyles.red)
-        doc.insertString(doc.length, "  ${check.getMissingMessage()}\n", textStyles.red)
-        doc.insertString(doc.length, "  Current: ${result.getDisplayValue()}\n\n", textStyles.black)
+        doc.insertString(doc.length, "  ${check.missingMessage}\n", textStyles.red)
+        doc.insertString(doc.length, "  Current: ${result.displayValue}\n\n", textStyles.black)
       }
     }
   }

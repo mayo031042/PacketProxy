@@ -166,7 +166,7 @@ class HighlightSegmentTest {
   @Test
   fun testAffectsOverallStatus_DefaultTrue() {
     val testCheck = createTestCheck("test:", emptyList())
-    assertTrue(testCheck.affectsOverallStatus())
+    assertTrue(testCheck.affectsOverallStatus)
   }
 
   // ===== Helper Methods =====
@@ -182,11 +182,9 @@ class HighlightSegmentTest {
     greenPatterns: List<String>,
   ): SecurityCheck {
     return object : SecurityCheck {
-      override fun getName(): String = "Test"
-
-      override fun getColumnName(): String = "Test"
-
-      override fun getMissingMessage(): String = "Test missing"
+      override val name: String = "Test"
+      override val columnName: String = "Test"
+      override val missingMessage: String = "Test missing"
 
       override fun check(
         header: HttpHeader,
@@ -199,11 +197,9 @@ class HighlightSegmentTest {
         return headerLine.lowercase().startsWith(headerPrefix.lowercase())
       }
 
-      override fun getRedPatterns(): List<String> = redPatterns
-
-      override fun getYellowPatterns(): List<String> = yellowPatterns
-
-      override fun getGreenPatterns(): List<String> = greenPatterns
+      override val redPatterns: List<String> = redPatterns
+      override val yellowPatterns: List<String> = yellowPatterns
+      override val greenPatterns: List<String> = greenPatterns
     }
   }
 }

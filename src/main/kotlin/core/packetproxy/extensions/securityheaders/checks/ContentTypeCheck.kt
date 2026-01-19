@@ -21,26 +21,24 @@ import packetproxy.http.HttpHeader
 
 /** Content-Type check. Validates that charset is specified for text/html responses. */
 class ContentTypeCheck : SecurityCheck {
-  override fun getName(): String = "Content-Type"
-
-  override fun getColumnName(): String = "Content-Type"
-
-  override fun getMissingMessage(): String = "Content-Type header is missing charset for text/html"
+  override val name: String = "Content-Type"
+  override val columnName: String = "Content-Type"
+  override val missingMessage: String = "Content-Type header is missing charset for text/html"
 
   override fun check(header: HttpHeader, context: MutableMap<String, Any>): SecurityCheckResult {
     val contentType = header.getValue("Content-Type").orElse("")
     val lowerContentType = contentType.lowercase()
 
+    // For non-HTML content, just return OK
+    if (!lowerContentType.contains("text/html")) {
+      return SecurityCheckResult.ok(contentType, contentType)
+    }
+
     // Only check charset for text/html
-    return if (lowerContentType.contains("text/html")) {
-      if (lowerContentType.contains("charset=")) {
-        SecurityCheckResult.ok(contentType, contentType)
-      } else {
-        SecurityCheckResult.fail("No charset", contentType)
-      }
-    } else {
-      // For non-HTML content, just return OK
+    return if (lowerContentType.contains("charset=")) {
       SecurityCheckResult.ok(contentType, contentType)
+    } else {
+      SecurityCheckResult.fail("No charset", contentType)
     }
   }
 

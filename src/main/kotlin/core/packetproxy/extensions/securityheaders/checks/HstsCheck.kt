@@ -21,11 +21,9 @@ import packetproxy.http.HttpHeader
 
 /** HSTS (Strict-Transport-Security) check. Validates that HSTS header is present. */
 class HstsCheck : SecurityCheck {
-  override fun getName(): String = "HSTS"
-
-  override fun getColumnName(): String = "HSTS"
-
-  override fun getMissingMessage(): String = "Strict-Transport-Security header is missing"
+  override val name: String = "HSTS"
+  override val columnName: String = "HSTS"
+  override val missingMessage: String = "Strict-Transport-Security header is missing"
 
   override fun check(header: HttpHeader, context: MutableMap<String, Any>): SecurityCheckResult {
     val hsts = header.getValue("Strict-Transport-Security").orElse("")

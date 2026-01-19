@@ -29,17 +29,13 @@ class CorsCheck : SecurityCheck {
     const val CONTEXT_KEY_REQUEST_ORIGIN = "requestOrigin"
   }
 
-  private val MSG_WILDCARD = "Access-Control-Allow-Origin is set to '*' (wildcard)"
-  private val MSG_ORIGIN_REFLECTION =
-    "Access-Control-Allow-Origin may be reflecting the Origin header (potential misconfiguration)"
+  override val name: String = "CORS"
+  override val columnName: String = "CORS"
+  override val missingMessage: String = "Potential CORS misconfiguration (wildcard or reflection)"
 
-  private var currentMessage = MSG_WILDCARD
-
-  override fun getName(): String = "CORS"
-
-  override fun getColumnName(): String = "CORS"
-
-  override fun getMissingMessage(): String = currentMessage
+  override val greenPatterns: List<String> = listOf("access-control-allow-origin")
+  override val yellowPatterns: List<String> = listOf("access-control-allow-origin")
+  override val redPatterns: List<String> = listOf("access-control-allow-origin: *")
 
   override fun check(header: HttpHeader, context: MutableMap<String, Any>): SecurityCheckResult {
     val cors = header.getValue("Access-Control-Allow-Origin").orElse("")
@@ -49,14 +45,12 @@ class CorsCheck : SecurityCheck {
     }
 
     if (cors == "*") {
-      currentMessage = MSG_WILDCARD
       return SecurityCheckResult.fail(cors, cors)
     }
 
     // Check for Origin reflection
     val requestOrigin = context[CONTEXT_KEY_REQUEST_ORIGIN] as? String
     if (requestOrigin != null && requestOrigin.isNotEmpty() && cors == requestOrigin) {
-      currentMessage = MSG_ORIGIN_REFLECTION
       return SecurityCheckResult.warn(cors, cors)
     }
 
@@ -66,10 +60,4 @@ class CorsCheck : SecurityCheck {
   override fun matchesHeaderLine(headerLine: String): Boolean {
     return headerLine.startsWith("access-control-allow-origin:")
   }
-
-  override fun getGreenPatterns(): List<String> = listOf("access-control-allow-origin")
-
-  override fun getYellowPatterns(): List<String> = listOf("access-control-allow-origin")
-
-  override fun getRedPatterns(): List<String> = listOf("access-control-allow-origin: *")
 }

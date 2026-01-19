@@ -37,8 +37,8 @@ class CacheControlCheckTest {
     val header = TestHttpHeader.empty()
     val result = check.check(header, context)
 
-    assertTrue(result.isOk())
-    assertEquals("No Cache-Control or Pragma", result.getDisplayValue())
+    assertTrue(result.isOk)
+    assertEquals("No Cache-Control or Pragma", result.displayValue)
   }
 
   // ===== Incomplete Cache-Control =====
@@ -48,7 +48,7 @@ class CacheControlCheckTest {
     val header = TestHttpHeader.withCacheControl("private")
     val result = check.check(header, context)
 
-    assertTrue(result.isWarn())
+    assertTrue(result.isWarn)
   }
 
   @Test
@@ -56,7 +56,7 @@ class CacheControlCheckTest {
     val header = TestHttpHeader.withCacheControl("no-store")
     val result = check.check(header, context)
 
-    assertTrue(result.isWarn())
+    assertTrue(result.isWarn)
   }
 
   @Test
@@ -64,7 +64,7 @@ class CacheControlCheckTest {
     val header = TestHttpHeader.withCacheControl("no-cache")
     val result = check.check(header, context)
 
-    assertTrue(result.isWarn())
+    assertTrue(result.isWarn)
   }
 
   @Test
@@ -72,7 +72,7 @@ class CacheControlCheckTest {
     val header = TestHttpHeader.withCacheControl("must-revalidate")
     val result = check.check(header, context)
 
-    assertTrue(result.isWarn())
+    assertTrue(result.isWarn)
   }
 
   @Test
@@ -80,7 +80,7 @@ class CacheControlCheckTest {
     val header = TestHttpHeader.withCacheControl("private, no-store")
     val result = check.check(header, context)
 
-    assertTrue(result.isWarn())
+    assertTrue(result.isWarn)
   }
 
   @Test
@@ -89,7 +89,7 @@ class CacheControlCheckTest {
     val header = TestHttpHeader.withCacheControl("private, no-store, no-cache, must-revalidate")
     val result = check.check(header, context)
 
-    assertTrue(result.isWarn())
+    assertTrue(result.isWarn)
   }
 
   // ===== Pragma without Cache-Control =====
@@ -99,7 +99,7 @@ class CacheControlCheckTest {
     val header = TestHttpHeader().addHeader("Pragma", "no-cache").build()
     val result = check.check(header, context)
 
-    assertTrue(result.isWarn())
+    assertTrue(result.isWarn)
   }
 
   // ===== Insecure Cache Configurations =====
@@ -109,7 +109,7 @@ class CacheControlCheckTest {
     val header = TestHttpHeader.withCacheControl("public, max-age=3600")
     val result = check.check(header, context)
 
-    assertTrue(result.isWarn())
+    assertTrue(result.isWarn)
   }
 
   @Test
@@ -117,7 +117,7 @@ class CacheControlCheckTest {
     val header = TestHttpHeader.withCacheControl("max-age=86400")
     val result = check.check(header, context)
 
-    assertTrue(result.isWarn())
+    assertTrue(result.isWarn)
   }
 
   // ===== Secure Configuration =====
@@ -131,7 +131,7 @@ class CacheControlCheckTest {
         .build()
     val result = check.check(header, context)
 
-    assertTrue(result.isOk())
+    assertTrue(result.isOk)
   }
 
   @Test
@@ -143,7 +143,7 @@ class CacheControlCheckTest {
         .build()
     val result = check.check(header, context)
 
-    assertTrue(result.isOk())
+    assertTrue(result.isOk)
   }
 
   // ===== Edge Cases =====
@@ -154,7 +154,7 @@ class CacheControlCheckTest {
     val result = check.check(header, context)
 
     // Empty string is treated as missing header
-    assertTrue(result.isOk())
+    assertTrue(result.isOk)
   }
 
   @Test
@@ -163,7 +163,7 @@ class CacheControlCheckTest {
     val result = check.check(header, context)
 
     // Whitespace-only is treated as missing header
-    assertTrue(result.isOk())
+    assertTrue(result.isOk)
   }
 
   @Test
@@ -172,7 +172,7 @@ class CacheControlCheckTest {
     val header = TestHttpHeader.withCacheControl("privat, no-stor, no-cach, must-revalidat")
     val result = check.check(header, context)
 
-    assertTrue(result.isWarn())
+    assertTrue(result.isWarn)
   }
 
   // ===== matchesHeaderLine =====
@@ -196,26 +196,26 @@ class CacheControlCheckTest {
 
   @Test
   fun testAffectsOverallStatus_False() {
-    assertFalse(check.affectsOverallStatus())
+    assertFalse(check.affectsOverallStatus)
   }
 
   // ===== Name and Messages =====
 
   @Test
   fun testGetName() {
-    assertEquals("Cache-Control", check.getName())
+    assertEquals("Cache-Control", check.name)
   }
 
   @Test
   fun testGetColumnName() {
-    assertEquals("Cache-Control", check.getColumnName())
+    assertEquals("Cache-Control", check.columnName)
   }
 
   @Test
   fun testGetMissingMessage() {
     assertEquals(
       "Cache-Control is not configured for sensitive data protection",
-      check.getMissingMessage(),
+      check.missingMessage,
     )
   }
 }

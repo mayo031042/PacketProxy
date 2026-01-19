@@ -37,8 +37,8 @@ class CorsCheckTest {
     val header = TestHttpHeader.empty()
     val result = check.check(header, context)
 
-    assertTrue(result.isOk())
-    assertEquals("No CORS", result.getDisplayValue())
+    assertTrue(result.isOk)
+    assertEquals("No CORS", result.displayValue)
   }
 
   // ===== Wildcard CORS - Security Issue =====
@@ -48,8 +48,8 @@ class CorsCheckTest {
     val header = TestHttpHeader.withCors("*")
     val result = check.check(header, context)
 
-    assertTrue(result.isFail())
-    assertEquals("*", result.getDisplayValue())
+    assertTrue(result.isFail)
+    assertEquals("*", result.displayValue)
   }
 
   // ===== Potentially Dangerous CORS Configurations =====
@@ -60,7 +60,7 @@ class CorsCheckTest {
     val header = TestHttpHeader.withCors(" *")
     val result = check.check(header, context)
 
-    assertTrue(result.isFail())
+    assertTrue(result.isFail)
   }
 
   @Test
@@ -69,7 +69,7 @@ class CorsCheckTest {
     val header = TestHttpHeader.withCors("**")
     val result = check.check(header, context)
 
-    assertTrue(result.isOk())
+    assertTrue(result.isOk)
   }
 
   @Test
@@ -78,7 +78,7 @@ class CorsCheckTest {
     val header = TestHttpHeader.withCors("https://*.example.com")
     val result = check.check(header, context)
 
-    assertTrue(result.isOk())
+    assertTrue(result.isOk)
   }
 
   // ===== Valid CORS Configurations =====
@@ -88,8 +88,8 @@ class CorsCheckTest {
     val header = TestHttpHeader.withCors("https://example.com")
     val result = check.check(header, context)
 
-    assertTrue(result.isOk())
-    assertEquals("https://example.com", result.getDisplayValue())
+    assertTrue(result.isOk)
+    assertEquals("https://example.com", result.displayValue)
   }
 
   @Test
@@ -97,7 +97,7 @@ class CorsCheckTest {
     val header = TestHttpHeader.withCors("http://localhost:3000")
     val result = check.check(header, context)
 
-    assertTrue(result.isOk())
+    assertTrue(result.isOk)
   }
 
   @Test
@@ -106,7 +106,7 @@ class CorsCheckTest {
     val header = TestHttpHeader.withCors("null")
     val result = check.check(header, context)
 
-    assertTrue(result.isOk())
+    assertTrue(result.isOk)
   }
 
   // ===== Origin Reflection Detection =====
@@ -119,7 +119,7 @@ class CorsCheckTest {
     val header = TestHttpHeader.withCors(origin)
     val result = check.check(header, context)
 
-    assertTrue(result.isWarn())
+    assertTrue(result.isWarn)
   }
 
   @Test
@@ -129,8 +129,8 @@ class CorsCheckTest {
     val header = TestHttpHeader.withCors("https://b.example.com")
     val result = check.check(header, context)
 
-    assertTrue(result.isOk())
-    assertEquals("https://b.example.com", result.getDisplayValue())
+    assertTrue(result.isOk)
+    assertEquals("https://b.example.com", result.displayValue)
   }
 
   @Test
@@ -139,7 +139,7 @@ class CorsCheckTest {
     val header = TestHttpHeader.withCors("https://example.com")
     val result = check.check(header, context)
 
-    assertTrue(result.isOk())
+    assertTrue(result.isOk)
   }
 
   @Test
@@ -149,7 +149,7 @@ class CorsCheckTest {
     val header = TestHttpHeader.withCors("https://example.com")
     val result = check.check(header, context)
 
-    assertTrue(result.isOk())
+    assertTrue(result.isOk)
   }
 
   @Test
@@ -159,7 +159,7 @@ class CorsCheckTest {
     val header = TestHttpHeader.withCors("*")
     val result = check.check(header, context)
 
-    assertTrue(result.isFail())
+    assertTrue(result.isFail)
   }
 
   // ===== Edge Cases =====
@@ -170,8 +170,8 @@ class CorsCheckTest {
     val header = TestHttpHeader.withCors("")
     val result = check.check(header, context)
 
-    assertTrue(result.isOk())
-    assertEquals("No CORS", result.getDisplayValue())
+    assertTrue(result.isOk)
+    assertEquals("No CORS", result.displayValue)
   }
 
   @Test
@@ -180,7 +180,7 @@ class CorsCheckTest {
     val header = TestHttpHeader.withCors("   ")
     val result = check.check(header, context)
 
-    assertTrue(result.isOk())
+    assertTrue(result.isOk)
   }
 
   @Test
@@ -188,7 +188,7 @@ class CorsCheckTest {
     val header = TestHttpHeader.withCors("https://example.com:8443")
     val result = check.check(header, context)
 
-    assertTrue(result.isOk())
+    assertTrue(result.isOk)
   }
 
   @Test
@@ -197,7 +197,7 @@ class CorsCheckTest {
     val header = TestHttpHeader.withCors("https://example.com/path")
     val result = check.check(header, context)
 
-    assertTrue(result.isOk())
+    assertTrue(result.isOk)
   }
 
   // ===== matchesHeaderLine =====
@@ -226,16 +226,16 @@ class CorsCheckTest {
 
   @Test
   fun testGetName() {
-    assertEquals("CORS", check.getName())
+    assertEquals("CORS", check.name)
   }
 
   @Test
   fun testGetColumnName() {
-    assertEquals("CORS", check.getColumnName())
+    assertEquals("CORS", check.columnName)
   }
 
   @Test
   fun testGetMissingMessage() {
-    assertEquals("Access-Control-Allow-Origin is set to '*' (wildcard)", check.getMissingMessage())
+    assertEquals("Potential CORS misconfiguration (wildcard or reflection)", check.missingMessage)
   }
 }
