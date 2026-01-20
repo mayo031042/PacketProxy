@@ -90,7 +90,8 @@ object Logging {
 
     val rootLogger = context.getLogger(org.slf4j.Logger.ROOT_LOGGER_NAME)
     rootLogger.addAppender(appender)
-    rootLogger.level = Level.INFO
+    // ormliteなどのdebugログを抑制するため、WARN未満は出力しない
+    rootLogger.level = Level.WARN
   }
 
   @JvmStatic
@@ -98,7 +99,8 @@ object Logging {
   fun log(format: Any, vararg args: Any?) {
     val fs = formatString(format, *args)
 
-    logger.info(fs)
+    // WARN未満は出力されないためwarnで出力する
+    logger.warn(fs)
     if (isGulp) return
     guiLog.append(fs)
   }
