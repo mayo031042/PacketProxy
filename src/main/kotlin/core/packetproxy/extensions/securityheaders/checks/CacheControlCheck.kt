@@ -45,11 +45,13 @@ class CacheControlCheck : SecurityCheck {
         cache.contains("must-revalidate") &&
         pragma.contains("no-cache")
 
-    return if (isSecure) {
-      SecurityCheckResult.ok(cache, cache)
-    } else {
-      SecurityCheckResult.warn(cache, cache)
+    if (isSecure) {
+      return SecurityCheckResult.ok(cache, cache)
+    } 
+    if (cache.isEmpty()) {
+      return SecurityCheckResult.warn("(none)", "(none)")
     }
+    return SecurityCheckResult.warn(cache, cache)
   }
 
   override fun matchesHeaderLine(headerLine: String): Boolean {
