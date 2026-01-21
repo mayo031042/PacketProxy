@@ -22,6 +22,7 @@ import org.eclipse.jetty.http2.hpack.HpackDecoder;
 import org.eclipse.jetty.http2.hpack.HpackEncoder;
 import org.junit.jupiter.api.Test;
 import packetproxy.http.Http;
+import packetproxy.util.Logging;
 
 public class HeadersFrameTest {
 
@@ -38,7 +39,7 @@ public class HeadersFrameTest {
 		byte[] frame = Hex
 				.decodeHex("00001B010500000001828487418798E79A82AE43D37A8825B650C3ABB6D2E053032A2F2A".toCharArray());
 		HeadersFrame fb = new HeadersFrame(frame, decoder);
-		System.out.println(fb.toString());
+		Logging.log(fb.toString());
 	}
 
 	@Test
@@ -46,7 +47,7 @@ public class HeadersFrameTest {
 		byte[] frame = Hex
 				.decodeHex("00001B010500000001828487418798E79A82AE43D37A8825B650C3ABB6D2E053032A2F2A".toCharArray());
 		HeadersFrame fb = new HeadersFrame(frame, decoder);
-		System.out.println(new String(fb.getHttp()));
+		Logging.log(new String(fb.getHttp()));
 	}
 
 	@Test
@@ -57,8 +58,8 @@ public class HeadersFrameTest {
 		byte[] b = fb.getHttp();
 		Http http = Http.create(b);
 		HeadersFrame fb2 = new HeadersFrame(http);
-		System.out.println(fb);
-		System.out.println(fb2);
+		Logging.log(fb);
+		Logging.log(fb2);
 	}
 
 	@Test
@@ -70,11 +71,11 @@ public class HeadersFrameTest {
 		byte[] b = fb.getHttp();
 		Http http = Http.create(b);
 		HeadersFrame fb2 = new HeadersFrame(http);
-		System.out.println(frame.length);
-		System.out.println(fb);
-		System.out.println(fb2);
-		System.out.println(new String(Hex.encodeHex(fb2.toByteArray())));
-		System.out.println(new String(Hex.encodeHex(fb2.toByteArrayWithoutExtra(encoder))));
+		Logging.log(frame.length);
+		Logging.log(fb);
+		Logging.log(fb2);
+		Logging.log(new String(Hex.encodeHex(fb2.toByteArray())));
+		Logging.log(new String(Hex.encodeHex(fb2.toByteArrayWithoutExtra(encoder))));
 	}
 
 	@Test
@@ -87,7 +88,7 @@ public class HeadersFrameTest {
 		bb.put(a);
 		bb.flip();
 		MetaData m = decoder.decode(bb);
-		System.out.println(m);
+		Logging.log(m);
 	}
 
 	@Test
@@ -97,7 +98,7 @@ public class HeadersFrameTest {
 						.toCharArray());
 		HpackDecoder decoder = new HpackDecoder(65535, 65535);
 		HeadersFrame headerFrame = new HeadersFrame(frameData, decoder);
-		System.out.println(new String(headerFrame.getExtra()));
+		Logging.log(new String(headerFrame.getExtra()));
 	}
 
 	@Test
@@ -107,6 +108,6 @@ public class HeadersFrameTest {
 						.toCharArray());
 		HpackDecoder decoder = new HpackDecoder(65535, 65535);
 		HeadersFrame headerFrame = new HeadersFrame(frameData, decoder);
-		System.out.println(new String(headerFrame.getExtra()));
+		Logging.log(new String(headerFrame.getExtra()));
 	}
 }

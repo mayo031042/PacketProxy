@@ -22,6 +22,7 @@ import java.nio.ByteBuffer;
 import org.apache.commons.codec.binary.Hex;
 import org.junit.jupiter.api.Test;
 import packetproxy.http3.service.frame.FrameParser;
+import packetproxy.util.Logging;
 
 class SettingsFrameTest {
 
@@ -62,6 +63,6 @@ class SettingsFrameTest {
 		assertThat(frames.size()).isEqualTo(2);
 		assertThat(frames.get(0)).isInstanceOf(SettingsFrame.class);
 		assertThat(frames.get(1)).isInstanceOf(GreaseFrame.class);
-		System.out.println(frames);
+		Logging.log(frames);
 	}
 }

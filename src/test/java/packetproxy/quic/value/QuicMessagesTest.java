@@ -21,6 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.apache.commons.codec.binary.Hex;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import packetproxy.util.Logging;
 
 class QuicMessagesTest {
 
@@ -52,7 +53,7 @@ class QuicMessagesTest {
 	@Test
 	void forEachが動作すること() {
 		this.msgs.forEach(msg -> {
-			System.out.println(msg);
+			Logging.log(msg);
 		});
 	}
 

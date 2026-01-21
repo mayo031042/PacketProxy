@@ -22,6 +22,7 @@ import org.apache.commons.codec.binary.Hex;
 import org.junit.jupiter.api.Test;
 import packetproxy.quic.value.ConnectionId;
 import packetproxy.quic.value.Token;
+import packetproxy.util.Logging;
 
 class NewConnectionIdFrameTest {
 
@@ -32,7 +33,7 @@ class NewConnectionIdFrameTest {
 		byte[] data = frame.getBytes();
 
 		NewConnectionIdFrame frame2 = NewConnectionIdFrame.parse(data);
-		System.out.println(frame2);
+		Logging.log(frame2);
 		assertThat(frame).isEqualTo(frame2);
 	}
 }

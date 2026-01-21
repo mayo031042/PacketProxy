@@ -19,6 +19,7 @@ import org.apache.commons.codec.binary.Hex;
 import org.junit.jupiter.api.Test;
 import packetproxy.http2.frames.Frame;
 import packetproxy.http2.frames.FrameUtils;
+import packetproxy.util.Logging;
 
 public class FrameManagerTest {
 
@@ -42,7 +43,7 @@ public class FrameManagerTest {
 		h2.write(settingsFrame);
 		for (Frame frame : FrameUtils.parseFrames(requestFrames)) {
 
-			System.out.println(frame.toString());
+			Logging.log(frame.toString());
 		}
 	}
 
@@ -52,7 +53,7 @@ public class FrameManagerTest {
 		h2.write(settingsFrame);
 		for (Frame frame : FrameUtils.parseFrames(responseFrames)) {
 
-			System.out.println(frame.toString());
+			Logging.log(frame.toString());
 		}
 	}
 

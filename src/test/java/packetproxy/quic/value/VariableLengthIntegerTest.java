@@ -22,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.nio.ByteBuffer;
 import org.apache.commons.codec.binary.Hex;
 import org.junit.jupiter.api.Test;
+import packetproxy.util.Logging;
 
 /* https://tools.ietf.org/html/draft-ietf-quic-transport-19#section-16 */
 class VariableLengthIntegerTest {
@@ -84,13 +85,13 @@ class VariableLengthIntegerTest {
 
 	@Test
 	void parseExampleBytes() throws Exception {
-		System.out.println(VariableLengthInteger.parse(Hex.decodeHex("80200000".toCharArray()))); /* 2MB */
-		System.out.println(VariableLengthInteger.parse(Hex.decodeHex("80100000".toCharArray()))); /* 1MB */
-		System.out.println(VariableLengthInteger.parse(Hex.decodeHex("4201".toCharArray()))); /* 513 */
-		System.out.println(VariableLengthInteger.parse(Hex.decodeHex("4077".toCharArray()))); /* 119 */
-		System.out.println(VariableLengthInteger.parse(Hex.decodeHex("58cb".toCharArray()))); /* 6347 */
-		System.out.printf("%x\n", VariableLengthInteger.parse(Hex.decodeHex("f684f228323451e8".toCharArray()))
+		Logging.log(VariableLengthInteger.parse(Hex.decodeHex("80200000".toCharArray()))); /* 2MB */
+		Logging.log(VariableLengthInteger.parse(Hex.decodeHex("80100000".toCharArray()))); /* 1MB */
+		Logging.log(VariableLengthInteger.parse(Hex.decodeHex("4201".toCharArray()))); /* 513 */
+		Logging.log(VariableLengthInteger.parse(Hex.decodeHex("4077".toCharArray()))); /* 119 */
+		Logging.log(VariableLengthInteger.parse(Hex.decodeHex("58cb".toCharArray()))); /* 6347 */
+		Logging.log("%x\n", VariableLengthInteger.parse(Hex.decodeHex("f684f228323451e8".toCharArray()))
 				.getValue()); /* 3684f228323451e8 */
-		System.out.printf("%x\n", VariableLengthInteger.parse(Hex.decodeHex("00".toCharArray())).getValue()); /* 0 */
+		Logging.log("%x\n", VariableLengthInteger.parse(Hex.decodeHex("00".toCharArray())).getValue()); /* 0 */
 	}
 }

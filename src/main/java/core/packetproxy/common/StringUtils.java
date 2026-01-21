@@ -92,7 +92,7 @@ public class StringUtils {
 			throw new Exception(I18nString.get("Length of string is not multiples of 2"));
 		}
 
-		// System.out.println(hex);
+		// Logging.log(hex);
 		byte[] bytes = new byte[hex.length() / 2];
 		for (int index = 0; index < bytes.length; index++) {
 
@@ -169,7 +169,7 @@ public class StringUtils {
 
 			String matched = matcher.group(0);
 			int from = pseudoString.indexOf(matched);
-			// System.err.println("Match! : " + pseudoString.length() + " : " + from + " : "
+			// Logging.err("Match! : " + pseudoString.length() + " : " + from + " : "
 			// + regex + " : " + pseudoString);
 			byte[] tmp_result = new byte[matched.length()];
 			for (int i = 0; i < matched.length(); ++i) {
@@ -177,11 +177,11 @@ public class StringUtils {
 				tmp_result[i] = input[from + i];
 			}
 			result.write(input, 0, from);
-			// System.err.println(result);
+			// Logging.err(result);
 			result.write(replace.getBytes(), 0, replace.getBytes().length);
-			// System.err.println(result);
+			// Logging.err(result);
 			result.write(input, from + matched.length(), input.length - (from + matched.length()));
-			// System.err.println(result);
+			// Logging.err(result);
 		}
 		return result.toByteArray();
 	}
@@ -226,7 +226,7 @@ public class StringUtils {
 		int start = 0;
 		while ((start = binaryFind(input, pattern, start)) > 0) {
 
-			// System.out.println("Replace : " + input.length + " : " + start + " : " + new
+			// Logging.log("Replace : " + input.length + " : " + start + " : " + new
 			// String(byteToHex(pattern)) + " -> " + new String(byteToHex(replace)));
 			for (int j = 0; j < replace.length; j++) {
 
