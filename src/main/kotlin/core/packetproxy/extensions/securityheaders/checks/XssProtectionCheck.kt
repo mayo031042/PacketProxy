@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 DeNA Co., Ltd.
+ * Copyright 2026 DeNA Co., Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,9 +19,7 @@ import packetproxy.extensions.securityheaders.SecurityCheck
 import packetproxy.extensions.securityheaders.SecurityCheckResult
 import packetproxy.http.HttpHeader
 
-/**
- * XSS Protection check (X-Content-Type-Options). Validates that nosniff is set or CSP is present.
- */
+/** XSS Protection check (X-Content-Type-Options). Validates that nosniff is set. */
 class XssProtectionCheck : SecurityCheck {
   override val name: String = "XSS Protection"
   override val columnName: String = "XSS Protection"

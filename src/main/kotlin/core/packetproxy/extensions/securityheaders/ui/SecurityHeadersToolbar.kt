@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 DeNA Co., Ltd.
+ * Copyright 2026 DeNA Co., Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -169,7 +169,7 @@ class SecurityHeadersToolbar(
       filterPanel.add(cb)
     }
 
-    filterPanel.add(Box.createHorizontalStrut(10)) // spacer
+    filterPanel.add(Box.createHorizontalStrut(10))
 
     // Status Code filter checkboxes
     filterPanel.add(JLabel("Server Response:"))
@@ -180,9 +180,8 @@ class SecurityHeadersToolbar(
       filterPanel.add(cb)
     }
 
-    filterPanel.add(Box.createHorizontalStrut(10)) // spacer
+    filterPanel.add(Box.createHorizontalStrut(10))
 
-    // Text filter
     filterPanel.add(JLabel("Filter:"))
     filterField = JTextField(15)
     filterField.document.addDocumentListener(

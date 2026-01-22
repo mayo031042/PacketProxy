@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 DeNA Co., Ltd.
+ * Copyright 2026 DeNA Co., Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -109,8 +109,6 @@ class SecurityHeadersExtension : Extension() {
 
     return panel
   }
-
-  // ===== UI Component Creation =====
 
   private fun initializeTableModel() {
     // Build columns dynamically from registered checks
@@ -259,8 +257,6 @@ class SecurityHeadersExtension : Extension() {
     }
   }
 
-  // ===== Selection Listener =====
-
   private fun setupSelectionListener() {
     table.selectionModel.addListSelectionListener { event ->
       if (event.valueIsAdjusting) return@addListSelectionListener
@@ -289,8 +285,6 @@ class SecurityHeadersExtension : Extension() {
       }
     }
   }
-
-  // ===== Table Operations =====
 
   private fun clearTable() {
     SwingUtilities.invokeLater {
@@ -342,8 +336,6 @@ class SecurityHeadersExtension : Extension() {
 
     return requestMap
   }
-
-  // ===== Packet Analysis =====
 
   /**
    * Calculates security check results for given HTTP headers. Pure function that performs all

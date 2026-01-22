@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 DeNA Co., Ltd.
+ * Copyright 2026 DeNA Co., Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -170,13 +170,11 @@ object SecurityHeadersTableRenderer {
         return
       }
 
-      // Fixed columns (Method, URL, Code)
       if (column < FIXED_COLUMNS) {
         c.foreground = Color.BLACK
         return
       }
 
-      // Check columns
       val checkIndex = column - FIXED_COLUMNS
       if (checkIndex < securityChecks.size && results != null) {
         val check = securityChecks[checkIndex]

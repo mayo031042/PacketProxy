@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 DeNA Co., Ltd.
+ * Copyright 2026 DeNA Co., Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -47,7 +47,7 @@ class CacheControlCheck : SecurityCheck {
 
     if (isSecure) {
       return SecurityCheckResult.ok(cache, cache)
-    } 
+    }
     if (cache.isEmpty()) {
       return SecurityCheckResult.warn("(none)", "(none)")
     }

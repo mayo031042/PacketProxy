@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 DeNA Co., Ltd.
+ * Copyright 2026 DeNA Co., Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,8 +28,8 @@ data class ExclusionRule(val id: String, val type: ExclusionRuleType, val patter
   ) : this(UUID.randomUUID().toString(), type, pattern)
 
   init {
-    require(id.isNotBlank()) { "id must not be null" }
-    require(pattern.isNotBlank()) { "pattern must not be null" }
+    require(id.isNotBlank()) { "id must not be blank" }
+    require(pattern.isNotBlank()) { "pattern must not be blank" }
   }
 
   /**

@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 DeNA Co., Ltd.
+ * Copyright 2026 DeNA Co., Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,19 +23,16 @@ object ExclusionRuleManager {
   private val rules = CopyOnWriteArrayList<ExclusionRule>()
   private val listeners = CopyOnWriteArrayList<Consumer<List<ExclusionRule>>>()
 
-  /** Adds a new exclusion rule. */
   fun addRule(rule: ExclusionRule) {
     rules.add(rule)
     notifyListeners()
   }
 
-  /** Removes an exclusion rule by its ID. */
   fun removeRule(ruleId: String) {
     rules.removeIf { it.id == ruleId }
     notifyListeners()
   }
 
-  /** Updates an existing rule. */
   fun updateRule(ruleId: String, newType: ExclusionRuleType, newPattern: String) {
     val index = rules.indexOfFirst { it.id == ruleId }
     if (index != -1) {
@@ -44,17 +41,14 @@ object ExclusionRuleManager {
     }
   }
 
-  /** Gets a rule by its ID. */
   fun getRule(ruleId: String): ExclusionRule? {
     return rules.firstOrNull { it.id == ruleId }
   }
 
-  /** Returns an unmodifiable view of all rules. */
   fun getRules(): List<ExclusionRule> {
     return rules.toList()
   }
 
-  /** Clears all exclusion rules. */
   fun clearRules() {
     rules.clear()
     notifyListeners()
@@ -71,12 +65,10 @@ object ExclusionRuleManager {
     return rules.any { it.matches(method, url) }
   }
 
-  /** Adds a listener that will be notified when rules change. */
   fun addChangeListener(listener: Consumer<List<ExclusionRule>>) {
     listeners.add(listener)
   }
 
-  /** Removes a change listener. */
   fun removeChangeListener(listener: Consumer<List<ExclusionRule>>) {
     listeners.remove(listener)
   }

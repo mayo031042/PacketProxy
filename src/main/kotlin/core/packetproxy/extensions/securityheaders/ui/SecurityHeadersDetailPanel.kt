@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 DeNA Co., Ltd.
+ * Copyright 2026 DeNA Co., Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -66,10 +66,8 @@ class SecurityHeadersDetailPanel(private val securityChecks: List<SecurityCheck>
       val doc = headerPane.styledDocument
       headerPane.text = ""
 
-      // Status line
       doc.insertString(doc.length, "${header.statusline}\n", textStyles.bold)
 
-      // All headers with color coding
       val headerBytes = header.toByteArray()
       val rawHeaders = String(headerBytes, Charsets.UTF_8)
       val lines = rawHeaders.split("\r\n", "\n")
@@ -77,15 +75,12 @@ class SecurityHeadersDetailPanel(private val securityChecks: List<SecurityCheck>
       for (line in lines) {
         if (line.isEmpty()) continue
 
-        // Try segment-based highlighting first
         val allSegments = collectHighlightSegments(line, results)
 
         if (allSegments.isNotEmpty()) {
-          // Sort segments by start position
           val sortedSegments = allSegments.sortedBy { it.start }
           insertLineWithSegments(doc, line, sortedSegments)
         } else {
-          // Fall back to whole-line highlighting
           val style = getStyleForHeaderLine(line, results)
           doc.insertString(doc.length, "$line\n", style)
         }
@@ -103,7 +98,6 @@ class SecurityHeadersDetailPanel(private val securityChecks: List<SecurityCheck>
       doc.insertString(doc.length, "Security Check Results\n", textStyles.bold)
       doc.insertString(doc.length, "=".repeat(40) + "\n\n", textStyles.black)
 
-      // Display results for each check
       for (check in securityChecks) {
         val result = results[check.name]
         if (result != null) {
@@ -144,25 +138,21 @@ class SecurityHeadersDetailPanel(private val securityChecks: List<SecurityCheck>
       val start = segment.start
       val end = segment.end
 
-      // Validate segment bounds
       if (start < 0 || end < 0 || start > lineLength || end > lineLength || start > end) {
         continue
       }
 
-      // Insert text before this segment (black)
       if (start > currentPos) {
         val beforeText = line.substring(currentPos, start)
         doc.insertString(doc.length, beforeText, textStyles.black)
       }
 
-      // Insert the segment with appropriate style
       val segmentText = line.substring(start, end)
       val style = getStyleForHighlightType(segment.type)
       doc.insertString(doc.length, segmentText, style)
       currentPos = end
     }
 
-    // Insert remaining text after last segment (black)
     if (currentPos < line.length) {
       doc.insertString(doc.length, line.substring(currentPos), textStyles.black)
     }
@@ -193,7 +183,6 @@ class SecurityHeadersDetailPanel(private val securityChecks: List<SecurityCheck>
       }
     }
 
-    // Special handling for Set-Cookie (per-line check)
     val lowerLine = line.lowercase()
     if (lowerLine.startsWith("set-cookie:")) {
       return if (CookieCheck.hasSecureFlag(lowerLine)) textStyles.green else textStyles.red

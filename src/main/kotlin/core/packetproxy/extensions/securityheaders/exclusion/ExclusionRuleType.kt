@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 DeNA Co., Ltd.
+ * Copyright 2026 DeNA Co., Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,6 @@
  */
 package packetproxy.extensions.securityheaders.exclusion
 
-/** Enum representing the type of exclusion rule for security header checks. */
 enum class ExclusionRuleType(val displayName: String) {
   HOST("Host"),
   PATH("Path"),

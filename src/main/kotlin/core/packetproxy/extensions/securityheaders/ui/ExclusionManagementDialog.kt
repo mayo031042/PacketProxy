@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 DeNA Co., Ltd.
+ * Copyright 2026 DeNA Co., Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -57,14 +57,12 @@ class ExclusionManagementDialog(
         setLocationRelativeTo(parent)
       }
 
-    // Table model for exclusions
     val columnNames = arrayOf("Type", "Pattern")
     exclusionTableModel =
       object : DefaultTableModel(columnNames, 0) {
         override fun isCellEditable(row: Int, column: Int): Boolean = false
       }
 
-    // Populate table with current rules
     refreshTable()
 
     exclusionTable =
@@ -77,7 +75,6 @@ class ExclusionManagementDialog(
     val scrollPane = JScrollPane(exclusionTable)
     dialog.add(scrollPane, BorderLayout.CENTER)
 
-    // Button panel
     val buttonPanel = createButtonPanel()
     dialog.add(buttonPanel, BorderLayout.SOUTH)
   }
@@ -183,7 +180,6 @@ class ExclusionManagementDialog(
         anchor = GridBagConstraints.WEST
       }
 
-    // Type selector
     gbc.gridx = 0
     gbc.gridy = 0
     panel.add(JLabel("Type:"), gbc)
@@ -193,7 +189,6 @@ class ExclusionManagementDialog(
     gbc.fill = GridBagConstraints.HORIZONTAL
     panel.add(typeCombo, gbc)
 
-    // Pattern field
     gbc.gridx = 0
     gbc.gridy = 1
     gbc.fill = GridBagConstraints.NONE
@@ -204,7 +199,6 @@ class ExclusionManagementDialog(
     gbc.fill = GridBagConstraints.HORIZONTAL
     panel.add(patternField, gbc)
 
-    // Hint label
     gbc.gridx = 0
     gbc.gridy = 2
     gbc.gridwidth = 2
@@ -213,7 +207,6 @@ class ExclusionManagementDialog(
         .apply { foreground = Color.GRAY }
     panel.add(hintLabel, gbc)
 
-    // Populate with existing values if editing
     if (existingRule != null) {
       typeCombo.selectedItem = existingRule.type
       patternField.text = existingRule.pattern
