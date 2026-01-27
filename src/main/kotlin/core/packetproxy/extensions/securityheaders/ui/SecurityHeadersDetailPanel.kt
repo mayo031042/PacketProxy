@@ -21,10 +21,11 @@ import javax.swing.JSplitPane
 import javax.swing.JTextPane
 import javax.swing.text.SimpleAttributeSet
 import javax.swing.text.StyledDocument
-import packetproxy.gui.WrapEditorKit
+import packetproxy.common.FontManager
 import packetproxy.extensions.securityheaders.SecurityCheck
 import packetproxy.extensions.securityheaders.SecurityCheckResult
 import packetproxy.extensions.securityheaders.checks.CookieCheck
+import packetproxy.gui.WrapEditorKit
 import packetproxy.http.HttpHeader
 
 /**
@@ -106,6 +107,7 @@ class SecurityHeadersDetailPanel(private val securityChecks: List<SecurityCheck>
       isEditable = false
       background = Color.WHITE
       setEditorKit(WrapEditorKit(byteArrayOf()))
+      font = FontManager.getInstance().font
     }
   }
 
