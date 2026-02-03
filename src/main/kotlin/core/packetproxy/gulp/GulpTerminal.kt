@@ -30,9 +30,6 @@ import packetproxy.util.Logging
 object GulpTerminal {
   @JvmStatic
   fun run(settingJsonPath: String?, scriptFilePath: String) {
-    // 設定ファイルを読み込む（ListenPortManager初期化後）
-    loadSettingsFromJson(settingJsonPath)
-
     val cmdCtx = CommandContext()
     val terminal = TerminalFactory.create(cmdCtx)
 
