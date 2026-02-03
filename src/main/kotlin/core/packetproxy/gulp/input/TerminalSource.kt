@@ -26,7 +26,7 @@ class TerminalSource(
   private val reader: LineReader,
 ) : LineSource() {
   override fun execOpen() {
-    println("=== CLI Mode ===")
+    cmdCtx.println("=== CLI Mode ===")
   }
 
   override fun readLine(): String {
