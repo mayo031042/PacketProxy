@@ -15,6 +15,7 @@
  */
 package packetproxy.cli
 
+import core.packetproxy.gulp.command.EchoCommand
 import core.packetproxy.gulp.command.LogCommand
 import core.packetproxy.gulp.command.SourceCommand
 import org.jline.builtins.Completers.TreeCompleter
@@ -33,6 +34,7 @@ abstract class CLIModeHandler {
         node("switch"),
         node("decode"),
         node("encode"),
+        node("echo"),
         node("log"),
         node("source"),
         node("help"),
@@ -62,6 +64,8 @@ abstract class CLIModeHandler {
       "l",
       "log" -> LogCommand(parsed, ctx)
 
+      "echo" -> EchoCommand(parsed, ctx)
+
       else -> extensionCommand(parsed, ctx)
     }
   }
@@ -78,6 +82,7 @@ abstract class CLIModeHandler {
     return """共通コマンド：
   exit                     - 終了
   help                     - ヘルプ
+  echo <args>              - 引数を出力
   l, log                   - ログ継続出力
   s, switch                - Mode切り替え
 
